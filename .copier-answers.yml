@@ -1,0 +1,18 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v2.0.0
+_src_path: https://github.com/napari/napari-plugin-template
+display_name: Multi Channel Surface
+email: judith.e.lutton@gmail.com
+full_name: Judith Lutton
+github_repository_url: https://github.com/judithlutton/napari-multi-channel-surface
+github_username_or_organization: judithlutton
+include_reader_plugin: true
+include_sample_data_plugin: true
+include_widget_plugin: true
+include_writer_plugin: true
+install_dependabot: true
+install_precommit: true
+license: MIT
+module_name: napari_multi_channel_surface
+plugin_name: napari-multi-channel-surface
+short_description: A simple plugin to enable easy interaction with multi-channel surfaces
