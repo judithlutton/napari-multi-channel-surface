@@ -19,7 +19,7 @@ contributions:
       python_name: napari_multi_channel_surface._sample_data:make_sample_data
       title: Load sample data from Multi Channel Surface
     - id: napari-multi-channel-surface.make_container_widget
-      python_name: napari_multi_channel_surface:ImageThreshold
+      python_name: napari_multi_channel_surface:SurfaceChannelChange
       title: Make threshold Container widget
     - id: napari-multi-channel-surface.make_magic_widget
       python_name: napari_multi_channel_surface:threshold_magic_widget
@@ -47,7 +47,7 @@ contributions:
       key: unique_id.1
   widgets:
     - command: napari-multi-channel-surface.make_container_widget
-      display_name: Container Threshold
+      display_name: Channel Select
     - command: napari-multi-channel-surface.make_magic_widget
       display_name: Magic Threshold
     - command: napari-multi-channel-surface.make_function_widget

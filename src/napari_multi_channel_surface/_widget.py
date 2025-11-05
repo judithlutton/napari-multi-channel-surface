@@ -32,7 +32,7 @@ Replace code below according to your needs.
 from typing import TYPE_CHECKING
 
 from magicgui import magic_factory
-from magicgui.widgets import CheckBox, Container, create_widget
+from magicgui.widgets import Container, RadioButtons, create_widget
 from qtpy.QtWidgets import QHBoxLayout, QPushButton, QWidget
 from skimage.util import img_as_float
 
@@ -65,51 +65,46 @@ def threshold_magic_widget(
 
 # if we want even more control over our widget, we can use
 # magicgui `Container`
-class ImageThreshold(Container):
+class SurfaceChannelChange(Container):
     def __init__(self, viewer: "napari.viewer.Viewer"):
         super().__init__()
         self._viewer = viewer
+        self._channels: list[str] = []
+        self._surface_layer = None
         # use create_widget to generate widgets from type annotations
-        self._image_layer_combo = create_widget(
-            label="Image", annotation="napari.layers.Image"
+        self._surface_layer_combo = create_widget(
+            label="Surface", annotation="napari.layers.Surface"
         )
-        self._threshold_slider = create_widget(
-            label="Threshold", annotation=float, widget_type="FloatSlider"
-        )
-        self._threshold_slider.min = 0
-        self._threshold_slider.max = 1
-        # use magicgui widgets directly
-        self._invert_checkbox = CheckBox(text="Keep pixels below threshold")
-
-        # connect your own callbacks
-        self._threshold_slider.changed.connect(self._threshold_im)
-        self._invert_checkbox.changed.connect(self._threshold_im)
+        self._surface_layer_combo.changed.connect(self._on_change_surface)
+        # Selection widget
+        self._channel_selector = RadioButtons()
+        self._channel_selector.changed.connect(self._on_change_channel)
 
         # append into/extend the container with your widgets
         self.extend(
             [
-                self._image_layer_combo,
-                self._threshold_slider,
-                self._invert_checkbox,
+                self._surface_layer_combo,
+                self._channel_selector,
             ]
         )
 
-    def _threshold_im(self):
-        image_layer = self._image_layer_combo.value
-        if image_layer is None:
+    def _on_change_surface(self, surface_layer):
+        self._surface_layer = surface_layer
+        self._channels = []
+        if surface_layer is not None:
+            n_points = surface_layer.vertices.shape[0]
+            if surface_layer.features.shape[0] == n_points:
+                self._channels = list(surface_layer.features.columns)
+        self._channel_selector.choices = self._channels
+
+    def _on_change_channel(self, channel_name):
+        surface_layer = self._surface_layer_combo.value
+        if surface_layer is None or len(self._channels) == 0:
             return
 
-        image = img_as_float(image_layer.data)
-        name = image_layer.name + "_thresholded"
-        threshold = self._threshold_slider.value
-        if self._invert_checkbox.value:
-            thresholded = image < threshold
-        else:
-            thresholded = image > threshold
-        if name in self._viewer.layers:
-            self._viewer.layers[name].data = thresholded
-        else:
-            self._viewer.add_labels(thresholded, name=name)
+        all_values = surface_layer.data[2]
+        channel_index = self._channels.index(channel_name)
+        surface_layer.vertex_values = all_values[channel_index]
 
 
 class ExampleQWidget(QWidget):
