@@ -108,10 +108,25 @@ def surface_reader(path):
 
     # kwargs used by viewer.add_surface() during layer creation
     meta_kwargs = {}
+    n_points = points.shape[0]
     if len(mesh.point_data) > 0:
         # store point_data as the metadata item `'point_data'`
-        meta_kwargs["metadata"] = {}
-        meta_kwargs["metadata"]["point_data"] = DataFrame(mesh.point_data)
+        point_data = {}
+        for k in mesh.point_data:
+            if mesh.point_data[k].size == n_points:
+                # Force to be 1D to fit DataFrame specification
+                point_data[k] = mesh.point_data[k].flatten()
+            elif (
+                mesh.point_data[k].shape[0] == n_points
+                and len(mesh.point_data[k].shape) == 2
+            ):
+                # 2D array, split into channels
+                n_channels = mesh.point_data[k].shape[1]
+                # TODO: make more robust by checking that no other channels have the given set of names
+                for i in range(n_channels):
+                    point_data[f"{k}_C{i}"] = mesh.point_data[k][:, i]
+
+        meta_kwargs["metadata"] = {"point_data": DataFrame(point_data)}
 
     layer_type = "surface"
     return (data, meta_kwargs, layer_type)
