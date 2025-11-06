@@ -31,36 +31,11 @@ Replace code below according to your needs.
 
 from typing import TYPE_CHECKING
 
-from magicgui import magic_factory
 from magicgui.widgets import Container, RadioButtons, create_widget
-from qtpy.QtWidgets import QHBoxLayout, QPushButton, QWidget
-from skimage.util import img_as_float
+from napari.layers import Surface
 
 if TYPE_CHECKING:
     import napari
-
-
-# Uses the `autogenerate: true` flag in the plugin manifest
-# to indicate it should be wrapped as a magicgui to autogenerate
-# a widget.
-def threshold_autogenerate_widget(
-    img: "napari.types.ImageData",
-    threshold: "float",
-) -> "napari.types.LabelsData":
-    return img_as_float(img) > threshold
-
-
-# the magic_factory decorator lets us customize aspects of our widget
-# we specify a widget type for the threshold parameter
-# and use auto_call=True so the function is called whenever
-# the value of a parameter changes
-@magic_factory(
-    threshold={"widget_type": "FloatSlider", "max": 1}, auto_call=True
-)
-def threshold_magic_widget(
-    img_layer: "napari.layers.Image", threshold: "float"
-) -> "napari.types.LabelsData":
-    return img_as_float(img_layer.data) > threshold
 
 
 # if we want even more control over our widget, we can use
@@ -70,16 +45,15 @@ class SurfaceChannelChange(Container):
         super().__init__()
         self._viewer = viewer
         self._channels: list[str] = []
-        self._surface_layer = None
         # use create_widget to generate widgets from type annotations
         self._surface_layer_combo = create_widget(
             label="Surface", annotation="napari.layers.Surface"
         )
-        self._surface_layer_combo.changed.connect(self._on_change_surface)
         # Selection widget
         self._channel_selector = RadioButtons()
+        self._surface_layer_combo.changed.connect(self._on_change_surface)
         self._channel_selector.changed.connect(self._on_change_channel)
-
+        self._viewer.layers.events.connect(self._on_layers_changed)
         # append into/extend the container with your widgets
         self.extend(
             [
@@ -87,9 +61,16 @@ class SurfaceChannelChange(Container):
                 self._channel_selector,
             ]
         )
+        if len(viewer.layers) > 0:
+            self._on_layers_changed(None)
+            self._on_change_surface(self._surface_layer_combo.value)
+
+    def _on_layers_changed(self, event):
+        self._surface_layer_combo.choices = [
+            x for x in self._viewer.layers if type(x) is Surface
+        ]
 
     def _on_change_surface(self, surface_layer):
-        self._surface_layer = surface_layer
         self._channels = []
         if surface_layer is not None:
             n_points = surface_layer.vertices.shape[0]
@@ -102,23 +83,4 @@ class SurfaceChannelChange(Container):
         if surface_layer is None or len(self._channels) == 0:
             return
 
-        all_values = surface_layer.data[2]
-        channel_index = self._channels.index(channel_name)
-        surface_layer.vertex_values = all_values[channel_index]
-
-
-class ExampleQWidget(QWidget):
-    # your QWidget.__init__ can optionally request the napari viewer instance
-    # use a type annotation of 'napari.viewer.Viewer' for any parameter
-    def __init__(self, viewer: "napari.viewer.Viewer"):
-        super().__init__()
-        self.viewer = viewer
-
-        btn = QPushButton("Click me!")
-        btn.clicked.connect(self._on_click)
-
-        self.setLayout(QHBoxLayout())
-        self.layout().addWidget(btn)
-
-    def _on_click(self):
-        print("napari has", len(self.viewer.layers), "layers")
+        surface_layer.vertex_values = surface_layer.features[channel_name]
