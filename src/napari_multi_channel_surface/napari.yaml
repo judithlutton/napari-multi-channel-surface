@@ -20,27 +20,25 @@ contributions:
       title: Load sample data from Multi Channel Surface
     - id: napari-multi-channel-surface.make_container_widget
       python_name: napari_multi_channel_surface:SurfaceChannelChange
-      title: Make threshold Container widget
-    - id: napari-multi-channel-surface.make_magic_widget
-      python_name: napari_multi_channel_surface:threshold_magic_widget
-      title: Make threshold magic widget
-    - id: napari-multi-channel-surface.make_function_widget
-      python_name: napari_multi_channel_surface:threshold_autogenerate_widget
-      title: Make threshold function widget
-    - id: napari-multi-channel-surface.make_qwidget
-      python_name: napari_multi_channel_surface:ExampleQWidget
-      title: Make example QWidget
+      title: Make Surface Channel Change widget
   readers:
     - command: napari-multi-channel-surface.get_reader
       accepts_directories: false
-      filename_patterns: ['*.npy']
+      filename_patterns: [
+        '*.msh', '*.mdpa', '*.ply', '*.stl', '*.vtk', '*.vtu', '*.xdmf', '*.xmf', '*.h5m',
+        '*.inp', '*.avs', '*.xml', '*.e', '*.exo', '*.ex2', '*.hmf', '*.med', '*.bdf', '*.fem',
+        '*.nas', '*.vol', '*.vol.gz', '*.obj', '*.off', '*.post', '*.post.gz', '*.dato',
+        '*.dato.gz', '*.dat', '*.tec', '*.wkt']
+
   writers:
     - command: napari-multi-channel-surface.write_multiple
-      layer_types: ['image*','labels*']
+      layer_types: ['surface*']
       filename_extensions: []
     - command: napari-multi-channel-surface.write_single_image
-      layer_types: ['image']
-      filename_extensions: ['.npy']
+      layer_types: ['surface']
+      filename_extensions: [
+        '.ply', '.vtk', '.vtu', '.xdmf', '.xmf', '.h5m', '.avs', '.e', '.exo', '.ex2',
+        '.hmf', '.med', '.dat', '.tec']
   sample_data:
     - command: napari-multi-channel-surface.make_sample_data
       display_name: Multi Channel Surface
@@ -48,10 +46,3 @@ contributions:
   widgets:
     - command: napari-multi-channel-surface.make_container_widget
       display_name: Channel Select
-    - command: napari-multi-channel-surface.make_magic_widget
-      display_name: Magic Threshold
-    - command: napari-multi-channel-surface.make_function_widget
-      autogenerate: true
-      display_name: Autogenerate Threshold
-    - command: napari-multi-channel-surface.make_qwidget
-      display_name: Example QWidget
