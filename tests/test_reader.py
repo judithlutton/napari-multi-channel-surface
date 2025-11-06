@@ -16,6 +16,7 @@ no_point_data_file_types = [".stl", ".vol"]
 suffix_list = point_data_file_types + no_point_data_file_types
 
 
+# TODO: specify params on test-by-test basis to avoid running unnecessary tests.
 @pytest.fixture(
     params=[["triangle"], ["triangle", "line"], ["line", "triangle", "quad"]]
 )
@@ -125,14 +126,53 @@ def test_surface_reader_point_data(
         np.all(simple_mesh.point_data[name] == point_data[name])
 
 
-def test_surface_reader_point_data_dtypes(
+def test_surface_reader_point_data_rgb(
     tmp_path: Path, simple_mesh: meshio.Mesh
 ):
-    pass
+    """Test how reader function handles files with RGB point data."""
+    n_points = simple_mesh.points.shape[0]
+    # Add RGB data to mesh
+    simple_mesh.point_data["RGB"] = np.arange(n_points * 3).reshape([-1, 3])
+    simple_mesh.point_data["dummy"] = np.zeros(n_points)
+
+    # Save test mesh data
+    mesh_file = tmp_path.joinpath("mesh.vtk")
+    simple_mesh.write(mesh_file)
+
+    # Read test mesh data
+    mesh_data = surface_reader(mesh_file)
+    layer_attributes = mesh_data[1]
+
+    # Confirm that metadata is one of the read attributes
+    assert "metadata" in layer_attributes
+    assert isinstance(layer_attributes["metadata"], dict)
+
+    # Confirm that point_data has been read
+    assert "point_data" in layer_attributes["metadata"]
+
+    point_data = layer_attributes["metadata"]["point_data"]
+    assert isinstance(point_data, DataFrame)
+
+    rgb_columns = [x for x in point_data.columns if x.startswith("RGB")]
+    assert len(rgb_columns) == 3
+    for i in range(3):
+        i_found = False
+        for k in rgb_columns:
+            if k.endswith(str(i)):
+                assert np.all(
+                    simple_mesh.point_data["RGB"][:, i] == point_data[k]
+                )
+                i_found = True
+                break
+        assert i_found
+
+
+def test_surface_reader_cell_data():
+    """Future functionality test: import cell data."""
 
 
 def test_reader_function_directory(tmp_path: Path):
-    pass
+    """Future functionality test: import directory."""
 
 
 # TODO: setup with pyvista
@@ -150,12 +190,7 @@ def test_surface_reader_meshio_error(tmp_path: Path):
 
 @pytest.mark.parametrize("suffix", suffix_list)
 def test_reader(tmp_path: Path, suffix: str):
-    """Test meshio reader plugin.
-
-    Tests a small subset of meshio available file formats.
-    See more details of available file formats here:
-    https://github.com/nschloe/meshio
-    """
+    """Test the reader function satisfies the plugin specification."""
     # Make test mesh data
     points = [[0, 0, 0], [0, 20, 20], [10, 0, 0], [10, 10, 10]]
     cells = [[0, 1, 2], [1, 2, 3]]
