@@ -6,10 +6,14 @@ implement multiple readers or even other plugin contributions. see:
 https://napari.org/stable/plugins/building_a_plugin/guides.html#readers
 """
 
+from collections.abc import Callable
+from pathlib import Path
+
+import meshio
 import numpy as np
 
 
-def napari_get_reader(path):
+def napari_get_reader(path: str | Path | list[str | Path]) -> Callable:
     """A basic implementation of a Reader contribution.
 
     Parameters
@@ -25,12 +29,11 @@ def napari_get_reader(path):
     """
     if isinstance(path, list):
         # reader plugins may be handed single path, or a list of paths.
-        # if it is a list, it is assumed to be an image stack...
-        # so we are only going to look at the first file.
+        # we assume that if one path is readable, then all are readable.
         path = path[0]
-
+    path = Path(path)
     # if we know we cannot read the file, we immediately return None.
-    if not path.endswith(".npy"):
+    if path.suffix not in meshio.extension_to_filetypes:
         return None
 
     # otherwise we return the *function* that can read ``path``.
@@ -38,11 +41,8 @@ def napari_get_reader(path):
 
 
 def reader_function(path):
-    """Take a path or list of paths and return a list of LayerData tuples.
-
-    Readers are expected to return data as a list of tuples, where each tuple
-    is (data, [add_kwargs, [layer_type]]), "add_kwargs" and "layer_type" are
-    both optional.
+    """Take a path or list of paths to valid surface files and return a list of
+    LayerData tuples representing those surfaces.
 
     Parameters
     ----------
@@ -53,21 +53,70 @@ def reader_function(path):
     -------
     layer_data : list of tuples
         A list of LayerData tuples where each tuple in the list contains
-        (data, metadata, layer_type), where data is a numpy array, metadata is
-        a dict of keyword arguments for the corresponding viewer.add_* method
-        in napari, and layer_type is a lower-case string naming the type of
-        layer. Both "meta", and "layer_type" are optional. napari will
-        default to layer_type=="image" if not provided
+        `(data, metadata, layer_type)`, where `data=(points,cells)` contains vertex coordinates and surface faces;
+        `metadata` is a `dict`, containing the key `features` if point data is read,
+        `metadata['features']` being a `dict` mapping channel names to color values;
+        and `layer_type='surface'`.
+
+    Notes
+    -----
+    The use of the `features` metadata to store channels is non-standard and blocks the use of
+    `features` in the built-in Features Table Widget.
+    See also:
+    https://napari.org/stable/tutorials/fundamentals/features.html#features-table-widget
     """
     # handle both a string and a list of strings
-    paths = [path] if isinstance(path, str) else path
-    # load all files into array
-    arrays = [np.load(_path) for _path in paths]
-    # stack arrays into single array
-    data = np.squeeze(np.stack(arrays))
+    paths = path if isinstance(path, list) else [path]
+    # Read all data
+    layer_data = [surface_reader(p) for p in paths]
+    return layer_data
 
-    # optional kwargs for the corresponding viewer.add_* method
-    add_kwargs = {}
 
-    layer_type = "image"  # optional, default is "image"
-    return [(data, add_kwargs, layer_type)]
+def surface_reader(path):
+    """Read surface data and return as a LayerData object
+
+    Readers are expected to return data as a list of tuples, where each tuple
+    is (data, [metadata, [layer_type]]), "metadata" and "layer_type" are
+    both optional.
+
+    Parameters
+    ----------
+    path : str or os.PathLike
+        Path to file.
+
+    Returns
+    -------
+    layer_data : tuple
+        A tuple conforming to the napari LayerData tuple specification, in the form
+            `(data, metadata, layer_type)`.
+        Here, `data=(points,cells)` contains vertex coordinates and surface faces;
+        `metadata` is a `dict`, containing the key `features` if point data is read,
+        `metadata['features']` being a `dict` mapping channel names to color values;
+        and `layer_type='surface'`.
+    """
+    # TODO: use try/except to catch read errors
+    try:
+        mesh = meshio.read(path)
+    except SystemExit as exc:
+        raise RuntimeError(
+            "Surface file is not in a readable format."
+        ) from exc
+
+    points = mesh.points
+    cells = np.array([])
+    for cell in mesh.cells:
+        if cell.type == "triangle":
+            cells = cell.data
+            break
+    # TODO: account for the possibility of meshio cell types that can act as faces but aren't triangles.
+    # TODO: (optional) allow points if no cell lists are triangles
+    data = (points, cells)
+
+    # metadata stores color data.
+    # TODO: metadata['features'] -> metadata['metadata']['point_data']
+    metadata: dict = {}
+    if len(mesh.point_data) > 0:
+        metadata["features"] = mesh.point_data
+
+    layer_type = "surface"
+    return (data, metadata, layer_type)
