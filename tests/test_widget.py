@@ -4,17 +4,24 @@ from napari_multi_channel_surface._widget import SurfaceChannelChange
 
 
 def test_surface_channel_change_widget(make_napari_viewer):
+    """Confirm that the `SurfaceChannelChange` widget functions as expected when opened
+    with existing surface layer present.
+
+    Tests run:
+    * current layer selected on openning
+    * channel options list is correct
+    * channel change widget updates the vertex_values
+    """
     viewer = make_napari_viewer()
     points = np.array([[0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]])
     cells = np.array([[0, 1, 2], [1, 2, 3]])
     point_data = {f"data{i}": np.arange(len(points)) + i for i in range(2)}
-    # surface_data = (points,cells)
     layer = viewer.add_surface((points, cells), features=point_data)
     scc_widget = SurfaceChannelChange(viewer)
 
-    # Set the widget value to the current surface layer
-    scc_widget._surface_layer_combo.value = layer
-    # Confirm that channel lists have been updated
+    # Confirm that the layer is selected
+    assert scc_widget._surface_layer_combo.value == layer
+    # Confirm that channel lists are correct
     assert list(scc_widget._channel_selector.choices) == list(point_data)
 
     # Confirm that the channel selector does indeed change the value
