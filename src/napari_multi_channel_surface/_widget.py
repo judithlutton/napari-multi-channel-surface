@@ -1,8 +1,6 @@
 """
 This module provides a widget to change the channels in a `napari.layers.Surface` object.
-This implementation assumes that the `features` table represents a set of color channels.
-When a channel is selected, the `vertex_values` attribute of the `Surface` object is assigned
-the values in the corresponding column of the `features` table.
+Here, channels are assumed to be stored in `Surface.metadata['point_data'].
 
 References:
 - Widget specification: https://napari.org/stable/plugins/building_a_plugin/guides.html#widgets
@@ -74,7 +72,7 @@ class SurfaceChannelChange(Container):
             x for x in self._viewer.layers if type(x) is Surface
         ]
 
-    def _on_change_surface(self, surface_layer):
+    def _on_change_surface(self, surface_layer: Surface | None):
         """Callback for the event of a new surface layer being selected in `_surface_layer_combo`.
 
         Updates the choices of channels from the new surface layer selection.
@@ -86,10 +84,14 @@ class SurfaceChannelChange(Container):
         """
         current_channel = self._channel_selector.value
         self._channels = []
-        if surface_layer is not None:
+        if (
+            surface_layer is not None
+            and "point_data" in surface_layer.metadata
+        ):
             n_points = surface_layer.vertices.shape[0]
-            if surface_layer.features.shape[0] == n_points:
-                self._channels = list(surface_layer.features.columns)
+            point_data = surface_layer.metadata["point_data"]
+            if point_data.shape[0] == n_points:
+                self._channels = list(point_data.columns)
         self._channel_selector.choices = self._channels
         if current_channel in self._channels:
             self._channel_selector.value = current_channel
@@ -107,5 +109,6 @@ class SurfaceChannelChange(Container):
         surface_layer = self._surface_layer_combo.value
         if surface_layer is None:
             return
-        if channel_name in surface_layer.features:
-            surface_layer.vertex_values = surface_layer.features[channel_name]
+        point_data = surface_layer.metadata["point_data"]
+        if channel_name in point_data:
+            surface_layer.vertex_values = point_data[channel_name]

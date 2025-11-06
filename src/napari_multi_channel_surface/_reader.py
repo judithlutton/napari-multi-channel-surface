@@ -11,6 +11,7 @@ from pathlib import Path
 
 import meshio
 import numpy as np
+from pandas import DataFrame
 
 
 def napari_get_reader(path: str | Path | list[str | Path]) -> Callable:
@@ -53,17 +54,10 @@ def reader_function(path):
     -------
     layer_data : list of tuples
         A list of LayerData tuples where each tuple in the list contains
-        `(data, metadata, layer_type)`, where `data=(points,cells)` contains vertex coordinates and surface faces;
-        `metadata` is a `dict`, containing the key `features` if point data is read,
-        `metadata['features']` being a `dict` mapping channel names to color values;
+        `(data, meta_kwargs, layer_type)`, where `data=(points,cells)` contains vertex coordinates and surface faces;
+        `meta_kwargs` is a `dict`, containing the key `features` if point data is read,
+        `meta_kwargs['metadata']` being a `dict` mapping channel names to color values;
         and `layer_type='surface'`.
-
-    Notes
-    -----
-    The use of the `features` metadata to store channels is non-standard and blocks the use of
-    `features` in the built-in Features Table Widget.
-    See also:
-    https://napari.org/stable/tutorials/fundamentals/features.html#features-table-widget
     """
     # handle both a string and a list of strings
     paths = path if isinstance(path, list) else [path]
@@ -76,7 +70,7 @@ def surface_reader(path):
     """Read surface data and return as a LayerData object
 
     Readers are expected to return data as a list of tuples, where each tuple
-    is (data, [metadata, [layer_type]]), "metadata" and "layer_type" are
+    is (data, [meta_kwargs, [layer_type]]), "meta_kwargs" and "layer_type" are
     both optional.
 
     Parameters
@@ -88,10 +82,10 @@ def surface_reader(path):
     -------
     layer_data : tuple
         A tuple conforming to the napari LayerData tuple specification, in the form
-            `(data, metadata, layer_type)`.
+            `(data, meta_kwargs, layer_type)`.
         Here, `data=(points,cells)` contains vertex coordinates and surface faces;
-        `metadata` is a `dict`, containing the key `features` if point data is read,
-        `metadata['features']` being a `dict` mapping channel names to color values;
+        `meta_kwargs` is a `dict`, containing the key `metadata` if point data is read,
+        `meta_kwargs['features']` being a `dict` mapping channel names to color values;
         and `layer_type='surface'`.
     """
     # TODO: use try/except to catch read errors
@@ -112,11 +106,12 @@ def surface_reader(path):
     # TODO: (optional) allow points if no cell lists are triangles
     data = (points, cells)
 
-    # metadata stores color data.
-    # TODO: metadata['features'] -> metadata['metadata']['point_data']
-    metadata: dict = {}
+    # kwargs used by viewer.add_surface() during layer creation
+    meta_kwargs = {}
     if len(mesh.point_data) > 0:
-        metadata["features"] = mesh.point_data
+        # store point_data as the metadata item `'point_data'`
+        meta_kwargs["metadata"] = {}
+        meta_kwargs["metadata"]["point_data"] = DataFrame(mesh.point_data)
 
     layer_type = "surface"
-    return (data, metadata, layer_type)
+    return (data, meta_kwargs, layer_type)

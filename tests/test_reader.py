@@ -5,6 +5,7 @@ import meshio
 import numpy as np
 import pytest
 import pyvista as pv
+from pandas import DataFrame
 
 from napari_multi_channel_surface import napari_get_reader
 from napari_multi_channel_surface._reader import surface_reader
@@ -109,13 +110,19 @@ def test_surface_reader_point_data(
     mesh_data = surface_reader(mesh_file)
     layer_data, layer_attributes, _ = mesh_data
 
-    # Confirm that the point data is included in the features dataframe
-    assert "features" in layer_attributes
-    assert isinstance(layer_attributes["features"], dict)
+    # Confirm that metadata is one of the read attributes
+    assert "metadata" in layer_attributes
+    assert isinstance(layer_attributes["metadata"], dict)
+
+    # Confirm that point_data has been read
+    assert "point_data" in layer_attributes["metadata"]
+
+    point_data = layer_attributes["metadata"]["point_data"]
+    assert isinstance(point_data, DataFrame)
 
     for name in data_names:
-        assert name in layer_attributes["features"]
-        np.all(simple_mesh.point_data[name] == layer_attributes["features"])
+        assert name in point_data
+        np.all(simple_mesh.point_data[name] == point_data[name])
 
 
 def test_surface_reader_point_data_dtypes(
