@@ -9,14 +9,18 @@ References:
 
 from typing import TYPE_CHECKING
 
-from magicgui.widgets import Container, RadioButtons, create_widget
-from napari.layers import Surface
+import magicgui.widgets as widgets
+import numpy as np
+from napari.utils import notifications
 
 if TYPE_CHECKING:
     import napari
 
+# TODO: consider if layer interaction is better handled through built-in selection.
+# TODO: multi-channel colors
 
-class SurfaceChannelChange(Container):
+
+class SurfaceChannelChange(widgets.Container):
     """Container widget with widgets and their callbacks for changing surface channels.
 
     Parameters
@@ -28,17 +32,19 @@ class SurfaceChannelChange(Container):
     def __init__(self, viewer: "napari.viewer.Viewer") -> None:
         super().__init__()
         self._viewer = viewer
-        # TODO: determine if _channels is really useful here
-        self._channels: list[str] = []
         # use create_widget to generate widgets from type annotations
-        self._surface_layer_combo = create_widget(
+        self._surface_layer_combo = DynamicComboBox(
             label="Surface", annotation="napari.layers.Surface"
         )
         # Selection widget
-        self._channel_selector = RadioButtons()
-        self._surface_layer_combo.changed.connect(self._on_change_surface)
-        self._channel_selector.changed.connect(self._on_change_channel)
+        self._channel_selector = DynamicComboBox(label="Channel")
+        # assign callbacks
+        # Update surface list on any change in the viewer layers
         self._viewer.layers.events.connect(self._on_layers_changed)
+        # update channel list when surface changes
+        self._surface_layer_combo.changed.connect(self._on_change_surface)
+        # update surface representation when channel changes
+        self._channel_selector.changed.connect(self._on_change_channel)
         # append into/extend the container with your widgets
         self.extend(
             [
@@ -46,9 +52,14 @@ class SurfaceChannelChange(Container):
                 self._channel_selector,
             ]
         )
-        if len(viewer.layers) > 0:
-            self._on_layers_changed(None)
-            self._on_change_surface(self._surface_layer_combo.value)
+        self._on_layers_changed(None)
+        self._on_change_surface(self._surface_layer_combo.value)
+
+        self.native_parent_changed.connect(
+            lambda x: notifications.show_debug(
+                f"Widget parent changed. Backend: {x}"
+            )
+        )
 
     def _on_layers_changed(self, event):
         """Callback for the event of the layers in `_viewer` changing.
@@ -68,11 +79,36 @@ class SurfaceChannelChange(Container):
         For the same reasons, there is no distinction drawn between changing and changed events,
         so when a layer is added, removed, or replaced, the function is called twice.
         """
-        self._surface_layer_combo.choices = [
-            x for x in self._viewer.layers if type(x) is Surface
+        # TODO: control selected value
+        # TODO: update channel selector
+        if event is None:
+            notifications.show_debug("Creating surface layer list")
+        elif str(event.type) in [
+            "inserted",
+            "removed",
+            "moved",
+            "changed",
+            "reordered",
+        ]:
+            notifications.show_debug(
+                f"Updating surface layer list in response to {event.type}"
+            )
+        else:
+            notifications.show_debug(
+                f"Ignoring surface layer event {event.type}"
+            )
+            return
+        surface_list = [
+            x for x in self._viewer.layers if type(x).__name__ == "Surface"
         ]
+        self._surface_layer_combo.choices = surface_list
+        if len(surface_list) == 0:
+            # no surfaces present: clear channel widget
+            self._on_change_surface(None)
 
-    def _on_change_surface(self, surface_layer: Surface | None):
+    def _on_change_surface(
+        self, surface_layer: "napari.layers.Surface | None"
+    ):
         """Callback for the event of a new surface layer being selected in `_surface_layer_combo`.
 
         Updates the choices of channels from the new surface layer selection.
@@ -82,18 +118,25 @@ class SurfaceChannelChange(Container):
         surface_layer : napari.layers.Surface
             The selected `Surface` object
         """
-        current_channel = self._channel_selector.value
-        self._channels = []
+        notifications.show_debug("Selected surface changed")
+        current_channel = (
+            self._channel_selector.value
+            if len(self._channel_selector.choices) > 0
+            else None
+        )
+        channels = ()
         if (
             surface_layer is not None
             and "point_data" in surface_layer.metadata
         ):
+            # Surface layer contains point_data.
             n_points = surface_layer.vertices.shape[0]
             point_data = surface_layer.metadata["point_data"]
-            if point_data.shape[0] == n_points:
-                self._channels = list(point_data.columns)
-        self._channel_selector.choices = self._channels
-        if current_channel in self._channels:
+            if np.shape(point_data)[0] == n_points:
+                # Point data is in the correct format
+                channels = tuple(point_data.columns)
+        self._channel_selector.choices = channels
+        if current_channel in channels and current_channel is not None:
             self._channel_selector.value = current_channel
 
     def _on_change_channel(self, channel_name):
@@ -106,9 +149,39 @@ class SurfaceChannelChange(Container):
         channel_name : str
             The selected channel to be displayed.
         """
+        notifications.show_debug("Selected channel changed")
         surface_layer = self._surface_layer_combo.value
         if surface_layer is None:
             return
         point_data = surface_layer.metadata["point_data"]
+        notifications.show_debug(f"{channel_name=}")
         if channel_name in point_data:
-            surface_layer.vertex_values = point_data[channel_name]
+            surface_layer.vertex_values = np.array(point_data[channel_name])
+        else:
+            notifications.show_warning(
+                f"Point data {channel_name} not found in Surface {surface_layer}. No changes made."
+            )
+
+
+class DynamicComboBox(widgets.ComboBox):
+    """ComboBox Widget (dropdown menu) for selecting channels with dynamic updating of choices.
+
+    Notes
+    -----
+    This is a small extension of the ComboBox widget to allow dynamic
+    updating of choices.
+    A `Container` object can reset values of all children in response to interactions with
+    napari.
+    To counter this, we initialize `choices` with a function that returns the `choices` property.
+    This function is set as the default choices function, so `reset_choices` does nothing.
+    """
+
+    def __init__(self, **kwargs):
+        choices = kwargs.pop("choices") if "choices" in kwargs else ()
+        super().__init__(choices=self._return_choices, **kwargs)
+        self.choices = choices
+
+    def _return_choices(
+        self, widget: widgets.bases.CategoricalWidget
+    ) -> tuple:
+        return self.choices
