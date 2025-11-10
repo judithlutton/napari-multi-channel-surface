@@ -4,26 +4,33 @@
 [![PyPI](https://img.shields.io/pypi/v/napari-multi-channel-surface.svg?color=green)](https://pypi.org/project/napari-multi-channel-surface)
 [![Python Version](https://img.shields.io/pypi/pyversions/napari-multi-channel-surface.svg?color=green)](https://python.org)
 [![tests](https://github.com/judithlutton/napari-multi-channel-surface/workflows/tests/badge.svg)](https://github.com/judithlutton/napari-multi-channel-surface/actions)
+<!---
 [![codecov](https://codecov.io/gh/judithlutton/napari-multi-channel-surface/branch/main/graph/badge.svg)](https://codecov.io/gh/judithlutton/napari-multi-channel-surface)
+--->
 [![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-multi-channel-surface)](https://napari-hub.org/plugins/napari-multi-channel-surface)
 [![npe2](https://img.shields.io/badge/plugin-npe2-blue?link=https://napari.org/stable/plugins/index.html)](https://napari.org/stable/plugins/index.html)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-purple.json)](https://github.com/copier-org/copier)
 
-A simple plugin to enable easy interaction with multi-channel surfaces
+A [napari] plugin to enable easy interaction with multi-channel surfaces
 
 ----------------------------------
 
-This [napari] plugin was generated with [copier] using the [napari-plugin-template] (None).
+## Overview
 
-<!--
-Don't miss the full getting started guide to set up your new package:
-https://github.com/napari/napari-plugin-template#getting-started
-
-and review the napari docs for plugin developers:
-https://napari.org/stable/plugins/index.html
--->
+The goal of this plugin is to provide a means for reading, writing, and interacting with surfaces containing
+multiple color channels in [napari]. When reading, color channel data is imported into the `napari.layers.Surface` object metadata under the key `point_data`. Different channels can be used to color the surface in [napari] using the `Channel Select` widget supplied with this plugin. Multi-channel surfaces are saved using the `point_data` metadata key to save each named channel.
 
 ## Installation
+
+### In napari
+This plugin was developed for use in the [napari] app. To install the plugin, go to
+
+`Plugins` > `Install/Uninstall Plugins...`
+
+Type `napari-multi-channel-surface` in the search box and click install next to the
+entry `napari-multi-channel-surface` in the search results.
+
+### With pip
 
 You can install `napari-multi-channel-surface` via [pip]:
 
@@ -44,7 +51,28 @@ To install latest development version :
 pip install git+https://github.com/judithlutton/napari-multi-channel-surface.git
 ```
 
+## File formats
 
+`napari-multi-channel-surface` uses meshio to read and write mesh files, and supports reading from files with the following extensions:
+```
+['.msh', '.mdpa', '.ply', '.stl', '.vtk', '.vtu', '.xdmf', '.xmf', '.h5m', '.inp', '.avs', '.xml', '.e', '.exo', '.ex2', '.hmf', '.med', '.bdf', '.fem', '.nas', '.vol', '.vol.gz', '.obj', '.off', '.post', '.post.gz', '.dato', '.dato.gz', '.dat', '.tec', '.wkt']
+```
+and writing to files with the following extensions:
+```
+['.ply', '.vtk', '.vtu', '.xdmf', '.xmf', '.h5m', '.avs', '.e', '.exo', '.ex2', '.hmf', '.med', '.dat', '.tec']
+```
+Note that some file types with read support (specifically those not listed as supported for writing) do not support color channel data, and will therefore be read with no color channels.
+
+## Channel Select Widget
+You can use the `Channel Select` widget with any data loaded with `napari-multi-channel-surface`. Simply load the surface(s) and open the widget with
+
+`Plugins` > `Channel Select (Multi Channel Surface)`
+
+The widget allows you to select the surface you wish to interact with, (`Surface` dropdown) and and which channel you wish to view (`Channel` dropdown).
+
+### Helpful hints for using the widget:
+* If your channels have widely varying ranges, set auto-contrast to `continuous`
+* Popular choices of colormaps include `viridis`, `plasma`, and `turbo`.
 
 ## Contributing
 
@@ -60,20 +88,18 @@ Distributed under the terms of the [MIT] license,
 
 If you encounter any problems, please [file an issue] along with a detailed description.
 
+----------------------------------
+
+This [napari] plugin was generated with [copier] using the [napari-plugin-template].
+
 [napari]: https://github.com/napari/napari
 [copier]: https://copier.readthedocs.io/en/stable/
 [@napari]: https://github.com/napari
 [MIT]: http://opensource.org/licenses/MIT
-[BSD-3]: http://opensource.org/licenses/BSD-3-Clause
-[GNU GPL v3.0]: http://www.gnu.org/licenses/gpl-3.0.txt
-[GNU LGPL v3.0]: http://www.gnu.org/licenses/lgpl-3.0.txt
-[Apache Software License 2.0]: http://www.apache.org/licenses/LICENSE-2.0
-[Mozilla Public License 2.0]: https://www.mozilla.org/media/MPL/2.0/index.txt
 [napari-plugin-template]: https://github.com/napari/napari-plugin-template
 
 [file an issue]: https://github.com/judithlutton/napari-multi-channel-surface/issues
 
-[napari]: https://github.com/napari/napari
 [tox]: https://tox.readthedocs.io/en/latest/
 [pip]: https://pypi.org/project/pip/
 [PyPI]: https://pypi.org/
