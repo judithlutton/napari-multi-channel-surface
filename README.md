@@ -18,7 +18,14 @@ A [napari] plugin to enable easy interaction with multi-channel surfaces
 ## Overview
 
 The goal of this plugin is to provide a means for reading, writing, and interacting with surfaces containing
-multiple color channels in [napari]. When reading, color channel data is imported into the `napari.layers.Surface` object metadata under the key `point_data`. Different channels can be used to color the surface in [napari] using the `Channel Select` widget supplied with this plugin. Multi-channel surfaces are saved using the `point_data` metadata key to save each named channel.
+multiple color channels in [napari]. When reading, color channel data is imported into the `napari.layers.Surface` metadata dictionary under the key `'point_data'`. 
+Different channels can be used to color the surface in [napari] using the `Channel Select` widget supplied with this plugin. 
+Multi-channel surfaces are saved using the `point_data` metadata key to save each named channel.
+
+Visualization of single channel vertex data is made possible in [napari] through the `vertex_values` Surface Layer property,
+while the `vertex_colors` property enables RGB and RGBA representations.
+Surface file formats such as `'.vtu'` provide the option of storing a variable number of features recorded at each vertex, 
+and `napari-multi-channel-surface` provides functionality to utilise data in these formats.
 
 ## Installation
 
@@ -51,19 +58,20 @@ To install latest development version :
 pip install git+https://github.com/judithlutton/napari-multi-channel-surface.git
 ```
 
-## File formats
+## Usage
 
-`napari-multi-channel-surface` uses meshio to read and write mesh files, and supports reading from files with the following extensions:
-```
-['.msh', '.mdpa', '.ply', '.stl', '.vtk', '.vtu', '.xdmf', '.xmf', '.h5m', '.inp', '.avs', '.xml', '.e', '.exo', '.ex2', '.hmf', '.med', '.bdf', '.fem', '.nas', '.vol', '.vol.gz', '.obj', '.off', '.post', '.post.gz', '.dato', '.dato.gz', '.dat', '.tec', '.wkt']
-```
-and writing to files with the following extensions:
+### Reading and writing
+Reading and writing mesh files can be performed in [napari] using the read and save functions in the `File` menu.
+
+#### File formats
+
+`napari-multi-channel-surface` uses [meshio] to read and write mesh files, and supports files with the following extensions:
 ```
 ['.ply', '.vtk', '.vtu', '.xdmf', '.xmf', '.h5m', '.avs', '.e', '.exo', '.ex2', '.hmf', '.med', '.dat', '.tec']
 ```
-Note that some file types with read support (specifically those not listed as supported for writing) do not support color channel data, and will therefore be read with no color channels.
+This subset of file types supported by [meshio] can store color channel data.
 
-## Channel Select Widget
+### Channel Select Widget
 You can use the `Channel Select` widget with any data loaded with `napari-multi-channel-surface`. Simply load the surface(s) and open the widget with
 
 `Plugins` > `Channel Select (Multi Channel Surface)`
@@ -94,7 +102,6 @@ This [napari] plugin was generated with [copier] using the [napari-plugin-templa
 
 [napari]: https://github.com/napari/napari
 [copier]: https://copier.readthedocs.io/en/stable/
-[@napari]: https://github.com/napari
 [MIT]: http://opensource.org/licenses/MIT
 [napari-plugin-template]: https://github.com/napari/napari-plugin-template
 
@@ -103,3 +110,4 @@ This [napari] plugin was generated with [copier] using the [napari-plugin-templa
 [tox]: https://tox.readthedocs.io/en/latest/
 [pip]: https://pypi.org/project/pip/
 [PyPI]: https://pypi.org/
+[meshio]: https://github.com/nschloe/meshio
