@@ -8,7 +8,7 @@ import pyvista as pv
 from pandas import DataFrame
 
 from napari_multi_channel_surface import napari_get_reader
-from napari_multi_channel_surface._reader import surface_reader
+from napari_multi_channel_surface._reader import read_surface
 
 # cell_type_dim = {"line": 2, "triangle": 3, "quad": 4}
 point_data_file_types = [".ply", ".vtk", ".vtu"]
@@ -80,7 +80,7 @@ def test_surface_reader(tmp_path: Path, simple_mesh: meshio.Mesh, suffix: str):
     simple_mesh.write(mesh_file)
 
     # Read mesh data
-    layer_data = surface_reader(mesh_file)
+    layer_data = read_surface(mesh_file)
 
     # test layer data format
     assert len(layer_data) == 3
@@ -114,7 +114,7 @@ def test_surface_reader_point_data(
     simple_mesh.write(mesh_file)
 
     # Read test mesh data
-    mesh_data = surface_reader(mesh_file)
+    mesh_data = read_surface(mesh_file)
     layer_data, layer_attributes, _ = mesh_data
 
     # Confirm that metadata is one of the read attributes
@@ -146,7 +146,7 @@ def test_surface_reader_point_data_rgb(
     simple_mesh.write(mesh_file)
 
     # Read test mesh data
-    mesh_data = surface_reader(mesh_file)
+    mesh_data = read_surface(mesh_file)
     layer_attributes = mesh_data[1]
 
     # Confirm that metadata is one of the read attributes
@@ -186,12 +186,12 @@ def test_surface_reader_meshio_error(tmp_path: Path):
     """Confirm that `surface_reader` returns the correct exceptions when meshio fails to read."""
     bad_file = tmp_path.joinpath("bad_mesh.vtk")
     with pytest.raises(meshio.ReadError):
-        surface_reader(bad_file)
+        read_surface(bad_file)
     mesh = pv.Sphere()
     mesh.save(bad_file)
 
     with pytest.raises(RuntimeError):
-        surface_reader(bad_file)
+        read_surface(bad_file)
 
 
 @pytest.mark.parametrize("suffix", suffix_list)

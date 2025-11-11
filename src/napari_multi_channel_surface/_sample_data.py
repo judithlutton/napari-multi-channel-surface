@@ -1,22 +1,35 @@
 """
-This module is an example of a barebones sample data provider for napari.
-
-It implements the "sample data" specification.
-see: https://napari.org/stable/plugins/building_a_plugin/guides.html#sample-data
-
-Replace code below according to your needs.
+This module provides sample data, read by the `napari-multi-channel-surface` reader function.
+Each channel in the sample data can be viewed using the `Channel Select` widget in `napari-multi-channel-surface`.
 """
 
 from __future__ import annotations
 
-import numpy
+from pathlib import Path
+
+from ._reader import reader_function
+
+_sample_dir = Path(__file__).parent.joinpath("data")
 
 
-def make_sample_data():
-    """Generates an image"""
-    # Return list of tuples
-    # [(data1, add_image_kwargs1), (data2, add_image_kwargs2)]
-    # Check the documentation for more information about the
-    # add_image_kwargs
-    # https://napari.org/stable/api/napari.Viewer.html#napari.Viewer.add_image
-    return [(numpy.random.rand(512, 512), {})]
+def stanford_bunny():
+    """Returns the standford bunny with point data 'X','Y', and 'Z' representing cartesian coordinates.
+
+    Notes
+    -----
+    Surface mesh adapted from data downloaded from repository
+    `https://graphics.stanford.edu/data/3Dscanrep/`.
+    Source file used: `bun_zipper_res2.ply`
+
+    Metadata:
+    Stanford Bunny
+    Source: Stanford University Computer Graphics Laboratory
+    Scanner: Cyberware 3030 MS
+    Number of scans: 10
+    Total size of scans: 362,272 points (about 725,000 triangles)
+    Reconstruction: zipper
+    Size of reconstruction: 35947 vertices, 69451 triangles
+    Comments: contains 5 holes in the bottom
+    """
+    data_file = _sample_dir.joinpath("bunny_xyz.vtu")
+    return reader_function(data_file)

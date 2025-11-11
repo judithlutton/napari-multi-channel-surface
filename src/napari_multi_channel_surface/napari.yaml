@@ -15,8 +15,8 @@ contributions:
     - id: napari-multi-channel-surface.write_single_surface
       python_name: napari_multi_channel_surface._writer:write_single_surface
       title: Save image data with Multi Channel Surface
-    - id: napari-multi-channel-surface.make_sample_data
-      python_name: napari_multi_channel_surface._sample_data:make_sample_data
+    - id: napari-multi-channel-surface.stanford_bunny
+      python_name: napari_multi_channel_surface._sample_data:stanford_bunny
       title: Load sample data from Multi Channel Surface
     - id: napari-multi-channel-surface.make_container_widget
       python_name: napari_multi_channel_surface:SurfaceChannelChange
@@ -40,9 +40,9 @@ contributions:
         '.ply', '.vtk', '.vtu', '.xdmf', '.xmf', '.h5m', '.avs', '.e', '.exo', '.ex2',
         '.hmf', '.med', '.dat', '.tec']
   sample_data:
-    - command: napari-multi-channel-surface.make_sample_data
-      display_name: Multi Channel Surface
-      key: unique_id.1
+    - command: napari-multi-channel-surface.stanford_bunny
+      display_name: Bunny xyz
+      key: napari-multi-channel-surface.data.stanford_bunny
   widgets:
     - command: napari-multi-channel-surface.make_container_widget
       display_name: Channel Select

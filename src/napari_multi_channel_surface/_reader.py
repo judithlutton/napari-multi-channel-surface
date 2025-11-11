@@ -14,7 +14,7 @@ import numpy as np
 from pandas import DataFrame
 
 
-def napari_get_reader(path: str | Path | list[str | Path]) -> Callable:
+def napari_get_reader(path: str | Path | list[str | Path]) -> Callable | None:
     """A basic implementation of a Reader contribution.
 
     Parameters
@@ -62,11 +62,11 @@ def reader_function(path):
     # handle both a string and a list of strings
     paths = path if isinstance(path, list) else [path]
     # Read all data
-    layer_data = [surface_reader(p) for p in paths]
+    layer_data = [read_surface(p) for p in paths]
     return layer_data
 
 
-def surface_reader(path):
+def read_surface(path):
     """Read surface data and return as a LayerData object
 
     Readers are expected to return data as a list of tuples, where each tuple
