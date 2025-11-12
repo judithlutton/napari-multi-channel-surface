@@ -8,55 +8,13 @@ import pyvista as pv
 from pandas import DataFrame
 
 from napari_multi_channel_surface import napari_get_reader
+from napari_multi_channel_surface._constants import _FILE_EXTENSIONS
 from napari_multi_channel_surface._reader import read_surface
-
-# cell_type_dim = {"line": 2, "triangle": 3, "quad": 4}
-point_data_file_types = [".ply", ".vtk", ".vtu"]
-no_point_data_file_types = [".stl", ".vol"]
-suffix_list = point_data_file_types + no_point_data_file_types
-
-
-# TODO: specify params on test-by-test basis to avoid running unnecessary tests.
-# @pytest.fixture(
-#     params=[["triangle"], ["triangle", "line"], ["line", "triangle", "quad"]]
-# )
-# def simple_mesh(request):
-#     """A simple mesh fixture to test reading and writing."""
-#     points = [[0, 0, 0], [0, 20, 20], [10, 0, 0], [10, 10, 10]]
-#     cell_types = getattr(request,'param',['triangle'])
-
-#     cells: list[tuple[str, list[np.ndarray]]] = []
-#     for s in cell_types:
-#         d = cell_type_dim[s]
-#         cells += [(s, [np.arange(d) + i for i in range(5 - d)])]
-#     return meshio.Mesh(points, cells)
-
-
-# def test_simple_mesh(tmp_path: Path, simple_mesh: meshio.Mesh):
-#     """Confirm that the `simple_mesh` fixture can be written and read correctly with `meshio`."""
-#     # Save test mesh data
-#     mesh_file = tmp_path.joinpath("test-mesh.ply")
-#     simple_mesh.write(mesh_file)
-
-#     # Read mesh data
-#     mesh_in = meshio.read(mesh_file)
-
-#     np.testing.assert_allclose(simple_mesh.points, mesh_in.points)
-#     assert len(simple_mesh.cells) == len(mesh_in.cells)
-#     for cell in simple_mesh.cells:
-#         cell_type = cell.type
-#         cell_found = False
-#         for cell_in in mesh_in.cells:
-#             if cell_in.type == cell_type:
-#                 assert np.all(cell.data == cell_in.data)
-#                 cell_found = True
-#                 break
-#         assert cell_found
 
 
 @pytest.mark.parametrize(
     "simple_mesh,suffix",
-    [(["triangle"], suffix) for suffix in suffix_list]
+    [(["triangle"], suffix) for suffix in _FILE_EXTENSIONS]
     + [(["line", "triangle"], ".vtu")],
     indirect=["simple_mesh"],
 )
@@ -96,7 +54,7 @@ def test_surface_reader(tmp_path: Path, simple_mesh: meshio.Mesh, suffix: str):
 
 @pytest.mark.parametrize(
     "suffix,n_channels",
-    [(s, n) for s in point_data_file_types for n in [1, 5]],
+    [(s, n) for s in _FILE_EXTENSIONS for n in [1, 5]],
 )
 def test_surface_reader_point_data(
     tmp_path: Path, simple_mesh: meshio.Mesh, suffix: str, n_channels: int
@@ -194,7 +152,7 @@ def test_surface_reader_meshio_error(tmp_path: Path):
         read_surface(bad_file)
 
 
-@pytest.mark.parametrize("suffix", suffix_list)
+@pytest.mark.parametrize("suffix", _FILE_EXTENSIONS)
 def test_reader(tmp_path: Path, simple_mesh: meshio.Mesh, suffix: str):
     """Test the reader function satisfies the plugin specification."""
     # Save test mesh data

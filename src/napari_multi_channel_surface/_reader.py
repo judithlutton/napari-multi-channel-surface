@@ -13,6 +13,8 @@ import meshio
 import numpy as np
 from pandas import DataFrame
 
+from ._constants import _FILE_EXTENSIONS
+
 
 def napari_get_reader(path: str | Path | list[str | Path]) -> Callable | None:
     """A basic implementation of a Reader contribution.
@@ -34,7 +36,7 @@ def napari_get_reader(path: str | Path | list[str | Path]) -> Callable | None:
         path = path[0]
     path = Path(path)
     # if we know we cannot read the file, we immediately return None.
-    if path.suffix not in meshio.extension_to_filetypes:
+    if path.suffix not in _FILE_EXTENSIONS:
         return None
 
     # otherwise we return the *function* that can read ``path``.
