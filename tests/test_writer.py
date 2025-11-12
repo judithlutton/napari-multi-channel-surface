@@ -32,7 +32,7 @@ def test_write_single_channels(tmp_path, simple_mesh, suffix):
     data_dict = {f"data{i}": simple_mesh.points[:, 0] + i for i in range(5)}
     point_data = DataFrame(data_dict)
     meta = {"point_data": point_data}
-    output_path = write_single_surface(mesh_file, data, meta)
+    output_path = write_single_surface(mesh_file, data, {"metadata": meta})
 
     # Confirm successful write
     assert output_path[0] == str(mesh_file)
