@@ -51,7 +51,7 @@ def write_single_surface(path: str | Path, data: Any, meta: dict) -> list[str]:
             and point_data.shape[0] == data[0].shape[0]
         ):
             for k in point_data.columns:
-                mesh.point_data[k] = point_data[k]
+                mesh.point_data[k] = np.array(point_data[k])
     mesh.write(path)
 
     # return path to any file(s) that were successfully written
