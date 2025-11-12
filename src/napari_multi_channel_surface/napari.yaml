@@ -24,11 +24,7 @@ contributions:
   readers:
     - command: napari-multi-channel-surface.get_reader
       accepts_directories: false
-      filename_patterns: [
-        '*.msh', '*.mdpa', '*.ply', '*.stl', '*.vtk', '*.vtu', '*.xdmf', '*.xmf', '*.h5m',
-        '*.inp', '*.avs', '*.xml', '*.e', '*.exo', '*.ex2', '*.hmf', '*.med', '*.bdf', '*.fem',
-        '*.nas', '*.vol', '*.vol.gz', '*.obj', '*.off', '*.post', '*.post.gz', '*.dato',
-        '*.dato.gz', '*.dat', '*.tec', '*.wkt']
+      filename_patterns: ['*.ply', '*.vtk', '*.vtu', '*.xdmf', '*.xmf', '*.h5m', '*.avs', '*.hmf', '*.med', '*.dat', '*.tec']
 
   writers:
     - command: napari-multi-channel-surface.write_multiple
@@ -36,9 +32,7 @@ contributions:
       filename_extensions: []
     - command: napari-multi-channel-surface.write_single_surface
       layer_types: ['surface']
-      filename_extensions: [
-        '.ply', '.vtk', '.vtu', '.xdmf', '.xmf', '.h5m', '.avs', '.e', '.exo', '.ex2',
-        '.hmf', '.med', '.dat', '.tec']
+      filename_extensions: ['.ply', '.vtk', '.vtu', '.xdmf', '.xmf', '.h5m', '.avs', '.hmf', '.med', '.dat', '.tec']
   sample_data:
     - command: napari-multi-channel-surface.stanford_bunny
       display_name: Bunny xyz
