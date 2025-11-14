@@ -4,9 +4,7 @@
 [![PyPI](https://img.shields.io/pypi/v/napari-multi-channel-surface.svg?color=green)](https://pypi.org/project/napari-multi-channel-surface)
 [![Python Version](https://img.shields.io/pypi/pyversions/napari-multi-channel-surface.svg?color=green)](https://python.org)
 [![tests](https://github.com/judithlutton/napari-multi-channel-surface/workflows/tests/badge.svg)](https://github.com/judithlutton/napari-multi-channel-surface/actions)
-<!---
 [![codecov](https://codecov.io/gh/judithlutton/napari-multi-channel-surface/branch/main/graph/badge.svg)](https://codecov.io/gh/judithlutton/napari-multi-channel-surface)
---->
 [![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-multi-channel-surface)](https://napari-hub.org/plugins/napari-multi-channel-surface)
 [![npe2](https://img.shields.io/badge/plugin-npe2-blue?link=https://napari.org/stable/plugins/index.html)](https://napari.org/stable/plugins/index.html)
 [![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-grayscale-inverted-border-purple.json)](https://github.com/copier-org/copier)
