@@ -55,9 +55,10 @@ jobs:
         env:
           PLATFORM: ${{ matrix.platform }}
 
-      - name: Coverage
+      - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
-
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
   build-and-inspect-package:
     name: Build & inspect package.
     runs-on: ubuntu-latest
