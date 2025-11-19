@@ -15,18 +15,23 @@ release = "0.0.3"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    "sphinx.ext.duration",
-    "sphinx.ext.autodoc",
-    "sphinx.ext.autosummary",
-    "sphinx.ext.napoleon",
+    "sphinx.ext.duration",  # Feedback for doc generation times
+    "sphinx.ext.autodoc",  # Automatic compilation of docstrings
+    "sphinx.ext.napoleon",  # Create rst file for autodoc
+    "numpydoc",  # Numpydoc extension
+    "sphinx.ext.intersphinx",  # Link to other sites
 ]
 
 templates_path = ["_templates"]
 exclude_patterns = []
 
-autosummary_generate = True
 autosummary_imported_members = True
+autodoc_member_order = "bysource"
 
+intersphinx_mapping = {
+    "napari": ("https://napari.org/stable/", None),
+    "magicgui": ("https://pyapp-kit.github.io/magicgui/", None),
+}
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

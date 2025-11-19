@@ -18,18 +18,18 @@ def stanford_bunny():
     Notes
     -----
     Surface mesh adapted from data downloaded from repository
-    `https://graphics.stanford.edu/data/3Dscanrep/`.
-    Source file used: `bun_zipper_res2.ply`
+    https://graphics.stanford.edu/data/3Dscanrep/.
+    Source file used: bun_zipper_res2.ply
 
-    Metadata:
-    Stanford Bunny
+    Surface metadata:
+
     Source: Stanford University Computer Graphics Laboratory
-    Scanner: Cyberware 3030 MS
-    Number of scans: 10
-    Total size of scans: 362,272 points (about 725,000 triangles)
-    Reconstruction: zipper
-    Size of reconstruction: 35947 vertices, 69451 triangles
-    Comments: contains 5 holes in the bottom
+    | Scanner: Cyberware 3030 MS
+    | Number of scans: 10
+    | Total size of scans: 362,272 points (about 725,000 triangles)
+    | Reconstruction: zipper
+    | Size of reconstruction: 35947 vertices, 69451 triangles
+    | Comments: contains 5 holes in the bottom
     """
     data_file = _sample_dir.joinpath("bunny_xyz.vtu")
     return reader_function(data_file)
