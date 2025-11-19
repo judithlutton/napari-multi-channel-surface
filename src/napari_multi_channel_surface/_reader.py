@@ -1,9 +1,5 @@
 """
-This module is an example of a barebones numpy reader plugin for napari.
-
-It implements the Reader specification, but your plugin may choose to
-implement multiple readers or even other plugin contributions. see:
-https://napari.org/stable/plugins/building_a_plugin/guides.html#readers
+This module contains reader functions to load surfaces and color data into napari.
 """
 
 from collections.abc import Callable
@@ -17,19 +13,41 @@ from ._constants import _FILE_EXTENSIONS
 
 
 def napari_get_reader(path: str | Path | list[str | Path]) -> Callable | None:
-    """A basic implementation of a Reader contribution.
+    """Get a reader function able to read single or multiple surfaces with channel data.
 
     Parameters
     ----------
-    path : str or list of str
+    path : str or Path or list of str or list of Path
         Path to file, or list of paths.
 
     Returns
     -------
-    function or None
-        If the path is a recognized format, return a function that accepts the
-        same path or list of paths, and returns a list of layer data tuples.
+    Callable or None
+        A function that reads all valid input paths in ``path``, or ``None``
+        if no valid input paths can be found.
+
+    See Also
+    --------
+    reader_function : function returned by ``napari_get_reader``.
+    read_surface : function used by ``reader_function`` to read individual surfaces.
+
+    Notes
+    -----
+    This function conforms to the 'reader contribution' specification for napari.
+    For details of this specification, see:
+    https://napari.org/stable/plugins/building_a_plugin/guides.html#readers
     """
+    # Implementation extension for future commit
+    # valid_path_found = False
+    # if isinstance(path, list):
+    #     # Check all paths to ensure that at least one is readable
+    #     for p in path:
+    #         if Path(p).suffix in _FILE_EXTENSIONS:
+    #             valid_path_found = True
+    #             break
+    # else:
+    #     valid_path_found = Path(path).suffix in _FILE_EXTENSIONS
+    # return reader_function if valid_path_found else None
     if isinstance(path, list):
         # reader plugins may be handed single path, or a list of paths.
         # we assume that if one path is readable, then all are readable.
@@ -44,22 +62,23 @@ def napari_get_reader(path: str | Path | list[str | Path]) -> Callable | None:
 
 
 def reader_function(path):
-    """Take a path or list of paths to valid surface files and return a list of
-    LayerData tuples representing those surfaces.
+    """Take a path or list of paths and return a list of
+    ``LayerData`` ``tuple`` s representing surfaces read from the input path(s).
 
     Parameters
     ----------
-    path : str or list of str
+    path : str or Path or list of str or list of Path
         Path to file, or list of paths.
 
     Returns
     -------
-    layer_data : list of tuples
-        A list of LayerData tuples where each tuple in the list contains
-        `(data, meta_kwargs, layer_type)`, where `data=(points,cells)` contains vertex coordinates and surface faces;
-        `meta_kwargs` is a `dict`, containing the key `features` if point data is read,
-        `meta_kwargs['metadata']` being a `dict` mapping channel names to color values;
-        and `layer_type='surface'`.
+    layer_data : list of tuple
+        A ``list`` of ``LayerData`` ``tuple`` s where each tuple in the list is of the form
+        ``(data, meta_kwargs, layer_type)``.
+
+    See Also
+    --------
+    read_surface : function called to read each input surface.
     """
     # handle both a string and a list of strings
     paths = path if isinstance(path, list) else [path]
@@ -69,28 +88,41 @@ def reader_function(path):
 
 
 def read_surface(path):
-    """Read surface data and return as a LayerData object
+    """Read surface data and return as a ``LayerData`` ``tuple``
 
-    Readers are expected to return data as a list of tuples, where each tuple
-    is (data, [meta_kwargs, [layer_type]]), "meta_kwargs" and "layer_type" are
-    both optional.
+    A ``LayerData`` ``tuple``
+    is given by
+
+        ``(data, meta_kwargs, layer_type)``,
+
+    where, for ``Surface`` layers,
+    ``data = (points, cells)`` contains vertex coordinates (``points``)
+    and vertex indices forming the corners of each mesh face (``cells``);
+    ``meta_kwargs`` is a ``dict``;
+    and ``layer_type = 'surface'``.
+    If point data is read, it is stored as a ``DataFrame`` in
+    ``meta_kwargs['metadata']['point_data']``, otherwise ``meta_kwargs`` is empty.
 
     Parameters
     ----------
-    path : str or os.PathLike
+    path : str or Path
         Path to file.
 
     Returns
     -------
     layer_data : tuple
         A tuple conforming to the napari LayerData tuple specification, in the form
-            `(data, meta_kwargs, layer_type)`.
-        Here, `data=(points,cells)` contains vertex coordinates and surface faces;
-        `meta_kwargs` is a `dict`, containing the key `metadata` if point data is read,
-        `meta_kwargs['features']` being a `dict` mapping channel names to color values;
-        and `layer_type='surface'`.
+        ``(data, meta_kwargs, layer_type)``.
+
+    Raises
+    ------
+    RuntimeError :
+        If an error occurred while attempting to read the file from disk.
+
+    See Also
+    --------
+    napari.layers.Surface
     """
-    # TODO: use try/except to catch read errors
     try:
         mesh = meshio.read(path)
     except SystemExit as exc:
@@ -104,15 +136,13 @@ def read_surface(path):
         if cell.type == "triangle":
             cells = cell.data
             break
-    # TODO: account for the possibility of meshio cell types that can act as faces but aren't triangles.
-    # TODO: (optional) allow points if no cell lists are triangles
     data = (points, cells)
 
     # kwargs used by viewer.add_surface() during layer creation
     meta_kwargs = {}
     n_points = points.shape[0]
     if len(mesh.point_data) > 0:
-        # store point_data as the metadata item `'point_data'`
+        # store point_data as the metadata item ``'point_data'```
         point_data = {}
         for k in mesh.point_data:
             if mesh.point_data[k].size == n_points:

@@ -22,22 +22,27 @@ if TYPE_CHECKING:
 
 
 def write_single_surface(path: str | Path, data: Any, meta: dict) -> list[str]:
-    """Writes a single surface layer.
+    """Write a single ``Surface`` layer.
 
     Parameters
     ----------
-    path : str
-        A string path indicating where to save the image file.
-    data : The layer data
-        Must have `data[0] = vertex_locations`, with shape `(N,3)` and
-        `data[1] = triangular_faces`, with shape (M,3)
+    path : str or Path
+        A path indicating where to save the image file.
+    data : tuple
+        Must have vertex locations at ``data[0]``, with shape ``(N,3)``, and
+        (triangular) faces at ``data[1]``, with shape ``(M,3)``
     meta : dict
-        A dictionary containing all other attributes from the napari layer.
-        Channels must be found in `meta['metadata']['point_data'] as a `pandas` `DataFrame`
+        A dictionary containing all other attributes from the ``Surface`` layer.
+        Channels must be located in ``meta['metadata']['point_data']`` as a ``pandas`` ``DataFrame``
 
     Returns
     -------
-    [path] : A list containing the string path to the saved file.
+    list of str :
+        A ``list`` containing a single string representing the path to the saved file.
+
+    See Also
+    --------
+    write_multiple, napari.layers.Surface
     """
     cells = [("triangle", np.array(data[1]))]
     mesh = meshio.Mesh(data[0], cells=cells)
@@ -56,23 +61,30 @@ def write_single_surface(path: str | Path, data: Any, meta: dict) -> list[str]:
 
 
 def write_multiple(path: str, data: list[FullLayerData]) -> list[str]:
-    """Writes multiple Surface layers.
+    """Write multiple Surface layers.
 
     Parameters
     ----------
     path : str
         A string path indicating the directory in which to save the data file(s).
-    data : A list of layer tuples.
-        Tuples contain three elements: (data, meta, layer_type)
-        `data` is the layer data
-        `meta` is a dictionary containing all other metadata attributes
-        from the napari layer. Channel data must be stored as a `pandas` `DataFrame` in
-        `meta['metadata']['point_data']`.
-        `layer_type` is a string. All entries with `layer_type != 'surface'` are ignored.
+    data : list of tuple
+        each ``tuple`` has the form ``(data, meta, layer_type)``,
+        where
+        ``data = (points, cells)`` contains vertex coordinates (``points``) and faces (``cells``);
+        ``meta`` is a ``dict`` containing metadata attributes;
+        and ``layer_type`` is a string.
+        Channel data must be stored as a ``pandas`` ``DataFrame`` in
+        ``meta['metadata']['point_data']``.
+        All entries with ``layer_type != 'surface'`` are ignored.
 
     Returns
     -------
-    [path] : A list containing (potentially multiple) string paths to the saved file(s).
+    list of str :
+        A ``list`` containing (potentially multiple) string paths to the saved file(s).
+
+    See Also
+    --------
+    write_single_surface, napari.layers.Surface
     """
 
     out_dir = Path(path)
@@ -82,6 +94,7 @@ def write_multiple(path: str, data: list[FullLayerData]) -> list[str]:
 
     output_files = []
     output_args = []
+    # Identify relevant layers and assign output paths
     for layer in data:
         layer_data, meta, layer_type = layer
         if layer_type == "surface":
@@ -95,10 +108,12 @@ def write_multiple(path: str, data: list[FullLayerData]) -> list[str]:
                 # Avoid overwriting current dataset
                 number_match = re.match(r".*[\D](\d+)", mesh_file.stem)
                 if number_match is None:
+                    # Previous file has no number suffix, start counting at 0
                     mesh_file = out_dir.joinpath(
                         f"{mesh_file.name}0{mesh_file.suffix}"
                     )
                 else:
+                    # Number suffix found, start counting at the next integer
                     current_str = number_match.group(1)
                     name_base = mesh_file.stem[: -len(current_str)]
                     next_number = int(current_str) + 1
@@ -115,8 +130,7 @@ def write_multiple(path: str, data: list[FullLayerData]) -> list[str]:
 
     output_paths = []
     out_dir.mkdir(exist_ok=True)
-    # for mesh_file, layer_data in zip(output_files, output_args, strict=True):
-    # layer_data, meta = layer_data
+    # write output files
     for mesh_file, layer_data, meta in output_args:
         mesh_path = write_single_surface(mesh_file, layer_data, meta)
         output_paths.extend(mesh_path)
