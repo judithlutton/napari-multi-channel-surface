@@ -1,1 +1,2 @@
 numpydoc
+napari_multi_channel_surface
