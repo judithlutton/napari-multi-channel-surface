@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>napari_multi_channel_surface &#8212; napari-multi-channel-surface 0.0.3 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=89b800e6" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=65a4545c"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/documentation_options.js?v=47de8214"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="napari_multi_channel_surface package" href="napari_multi_channel_surface.html" />
     <link rel="prev" title="Usage" href="usage.html" /> 
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li class="right" >
           <a href="napari_multi_channel_surface.html" title="napari_multi_channel_surface package"
              accesskey="N">next</a> |</li>
@@ -41,11 +44,21 @@
           <div class="body" role="main">
             
   <section id="napari-multi-channel-surface">
-<h1>napari_multi_channel_surface<a class="headerlink" href="#napari-multi-channel-surface" title="Permalink to this heading">¶</a></h1>
+<h1>napari_multi_channel_surface<a class="headerlink" href="#napari-multi-channel-surface" title="Link to this heading">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="napari_multi_channel_surface.html">napari_multi_channel_surface package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="napari_multi_channel_surface.html#module-contents">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="napari_multi_channel_surface.html#module-napari_multi_channel_surface">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="napari_multi_channel_surface.html#napari_multi_channel_surface.napari_get_reader"><code class="docutils literal notranslate"><span class="pre">napari_get_reader()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="napari_multi_channel_surface.html#napari_multi_channel_surface.reader_function"><code class="docutils literal notranslate"><span class="pre">reader_function()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="napari_multi_channel_surface.html#napari_multi_channel_surface.read_surface"><code class="docutils literal notranslate"><span class="pre">read_surface()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="napari_multi_channel_surface.html#napari_multi_channel_surface.write_single_surface"><code class="docutils literal notranslate"><span class="pre">write_single_surface()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="napari_multi_channel_surface.html#napari_multi_channel_surface.write_multiple"><code class="docutils literal notranslate"><span class="pre">write_multiple()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="napari_multi_channel_surface.html#napari_multi_channel_surface.SurfaceChannelChange"><code class="docutils literal notranslate"><span class="pre">SurfaceChannelChange</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="napari_multi_channel_surface.html#napari_multi_channel_surface.DynamicComboBox"><code class="docutils literal notranslate"><span class="pre">DynamicComboBox</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="napari_multi_channel_surface.html#napari_multi_channel_surface.stanford_bunny"><code class="docutils literal notranslate"><span class="pre">stanford_bunny()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -57,7 +70,7 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h4>Previous topic</h4>
@@ -76,7 +89,7 @@
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -84,18 +97,21 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li class="right" >
           <a href="napari_multi_channel_surface.html" title="napari_multi_channel_surface package"
              >next</a> |</li>
@@ -108,7 +124,7 @@
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2025, University of Warwick.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     </div>
   </body>
 </html>

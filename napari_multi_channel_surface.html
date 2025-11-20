@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>napari_multi_channel_surface package &#8212; napari-multi-channel-surface 0.0.3 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=89b800e6" />
+    <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=65a4545c"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
-    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/documentation_options.js?v=47de8214"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="napari_multi_channel_surface" href="modules.html" /> 
   </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li class="right" >
           <a href="modules.html" title="napari_multi_channel_surface"
              accesskey="P">previous</a> |</li>
@@ -38,9 +41,416 @@
           <div class="body" role="main">
             
   <section id="napari-multi-channel-surface-package">
-<h1>napari_multi_channel_surface package<a class="headerlink" href="#napari-multi-channel-surface-package" title="Permalink to this heading">¶</a></h1>
-<section id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">¶</a></h2>
+<h1>napari_multi_channel_surface package<a class="headerlink" href="#napari-multi-channel-surface-package" title="Link to this heading">¶</a></h1>
+<section id="module-napari_multi_channel_surface">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-napari_multi_channel_surface" title="Link to this heading">¶</a></h2>
+<p>A module to enable reading, writing, and interacting with surface data containing multiple color channels in napari.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="napari_multi_channel_surface.napari_get_reader">
+<span class="sig-prename descclassname"><span class="pre">napari_multi_channel_surface.</span></span><span class="sig-name descname"><span class="pre">napari_get_reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#napari_multi_channel_surface.napari_get_reader" title="Link to this definition">¶</a></dt>
+<dd><p>Get a reader function able to read single or multiple surfaces with channel data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em><em> or </em><em>Path</em><em> or </em><em>list</em><em> of </em><em>str</em><em> or </em><em>list</em><em> of </em><em>Path</em>) – Path to file, or list of paths.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A function that reads all valid input paths in <code class="docutils literal notranslate"><span class="pre">path</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code>
+if no valid input paths can be found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Callable or None</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#napari_multi_channel_surface.reader_function" title="napari_multi_channel_surface.reader_function"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reader_function</span></code></a></dt><dd><p>function returned by <code class="docutils literal notranslate"><span class="pre">napari_get_reader</span></code>.</p>
+</dd>
+<dt><a class="reference internal" href="#napari_multi_channel_surface.read_surface" title="napari_multi_channel_surface.read_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_surface</span></code></a></dt><dd><p>function used by <code class="docutils literal notranslate"><span class="pre">reader_function</span></code> to read individual surfaces.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>This function conforms to the ‘reader contribution’ specification for napari.
+For details of this specification, see:
+<a class="reference external" href="https://napari.org/stable/plugins/building_a_plugin/guides.html#readers">https://napari.org/stable/plugins/building_a_plugin/guides.html#readers</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="napari_multi_channel_surface.reader_function">
+<span class="sig-prename descclassname"><span class="pre">napari_multi_channel_surface.</span></span><span class="sig-name descname"><span class="pre">reader_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#napari_multi_channel_surface.reader_function" title="Link to this definition">¶</a></dt>
+<dd><p>Take a path or list of paths and return a list of
+<code class="docutils literal notranslate"><span class="pre">LayerData</span></code> <code class="docutils literal notranslate"><span class="pre">tuple</span></code> s representing surfaces read from the input path(s).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em><em> or </em><em>Path</em><em> or </em><em>list</em><em> of </em><em>str</em><em> or </em><em>list</em><em> of </em><em>Path</em>) – Path to file, or list of paths.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>layer_data</strong> – A <code class="docutils literal notranslate"><span class="pre">list</span></code> of <code class="docutils literal notranslate"><span class="pre">LayerData</span></code> <code class="docutils literal notranslate"><span class="pre">tuple</span></code> s where each tuple in the list is of the form
+<code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">meta_kwargs,</span> <span class="pre">layer_type)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of tuple</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#napari_multi_channel_surface.read_surface" title="napari_multi_channel_surface.read_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_surface</span></code></a></dt><dd><p>function called to read each input surface.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="napari_multi_channel_surface.read_surface">
+<span class="sig-prename descclassname"><span class="pre">napari_multi_channel_surface.</span></span><span class="sig-name descname"><span class="pre">read_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#napari_multi_channel_surface.read_surface" title="Link to this definition">¶</a></dt>
+<dd><p>Read surface data and return as a <code class="docutils literal notranslate"><span class="pre">LayerData</span></code> <code class="docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<p>A <code class="docutils literal notranslate"><span class="pre">LayerData</span></code> <code class="docutils literal notranslate"><span class="pre">tuple</span></code>
+is given by</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">meta_kwargs,</span> <span class="pre">layer_type)</span></code>,</p>
+</div></blockquote>
+<p>where, for <code class="docutils literal notranslate"><span class="pre">Surface</span></code> layers,
+<code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">=</span> <span class="pre">(points,</span> <span class="pre">cells)</span></code> contains vertex coordinates (<code class="docutils literal notranslate"><span class="pre">points</span></code>)
+and vertex indices forming the corners of each mesh face (<code class="docutils literal notranslate"><span class="pre">cells</span></code>);
+<code class="docutils literal notranslate"><span class="pre">meta_kwargs</span></code> is a <code class="docutils literal notranslate"><span class="pre">dict</span></code>;
+and <code class="docutils literal notranslate"><span class="pre">layer_type</span> <span class="pre">=</span> <span class="pre">'surface'</span></code>.
+If point data is read, it is stored as a <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> in
+<code class="docutils literal notranslate"><span class="pre">meta_kwargs['metadata']['point_data']</span></code>, otherwise <code class="docutils literal notranslate"><span class="pre">meta_kwargs</span></code> is empty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em><em> or </em><em>Path</em>) – Path to file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>layer_data</strong> – A tuple conforming to the napari LayerData tuple specification, in the form
+<code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">meta_kwargs,</span> <span class="pre">layer_type)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError :</strong> – If an error occurred while attempting to read the file from disk.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://napari.org/stable/api/napari.layers.Surface.html#napari.layers.Surface" title="(in napari v0.6.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">napari.layers.Surface</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="napari_multi_channel_surface.write_single_surface">
+<span class="sig-prename descclassname"><span class="pre">napari_multi_channel_surface.</span></span><span class="sig-name descname"><span class="pre">write_single_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#napari_multi_channel_surface.write_single_surface" title="Link to this definition">¶</a></dt>
+<dd><p>Write a single <code class="docutils literal notranslate"><span class="pre">Surface</span></code> layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> or </em><em>Path</em>) – A path indicating where to save the image file.</p></li>
+<li><p><strong>data</strong> (<em>tuple</em>) – Must have vertex locations at <code class="docutils literal notranslate"><span class="pre">data[0]</span></code>, with shape <code class="docutils literal notranslate"><span class="pre">(N,3)</span></code>, and
+(triangular) faces at <code class="docutils literal notranslate"><span class="pre">data[1]</span></code>, with shape <code class="docutils literal notranslate"><span class="pre">(M,3)</span></code></p></li>
+<li><p><strong>meta</strong> (<em>dict</em>) – A dictionary containing all other attributes from the <code class="docutils literal notranslate"><span class="pre">Surface</span></code> layer.
+Channels must be located in <code class="docutils literal notranslate"><span class="pre">meta['metadata']['point_data']</span></code> as a <code class="docutils literal notranslate"><span class="pre">pandas</span></code> <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">list</span></code> containing a single string representing the path to the saved file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#napari_multi_channel_surface.write_multiple" title="napari_multi_channel_surface.write_multiple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_multiple</span></code></a>, <a class="reference external" href="https://napari.org/stable/api/napari.layers.Surface.html#napari.layers.Surface" title="(in napari v0.6.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">napari.layers.Surface</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="napari_multi_channel_surface.write_multiple">
+<span class="sig-prename descclassname"><span class="pre">napari_multi_channel_surface.</span></span><span class="sig-name descname"><span class="pre">write_multiple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">FullLayerData</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#napari_multi_channel_surface.write_multiple" title="Link to this definition">¶</a></dt>
+<dd><p>Write multiple Surface layers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – A string path indicating the directory in which to save the data file(s).</p></li>
+<li><p><strong>data</strong> (<em>list</em><em> of </em><em>tuple</em>) – each <code class="docutils literal notranslate"><span class="pre">tuple</span></code> has the form <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">meta,</span> <span class="pre">layer_type)</span></code>,
+where
+<code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">=</span> <span class="pre">(points,</span> <span class="pre">cells)</span></code> contains vertex coordinates (<code class="docutils literal notranslate"><span class="pre">points</span></code>) and faces (<code class="docutils literal notranslate"><span class="pre">cells</span></code>);
+<code class="docutils literal notranslate"><span class="pre">meta</span></code> is a <code class="docutils literal notranslate"><span class="pre">dict</span></code> containing metadata attributes;
+and <code class="docutils literal notranslate"><span class="pre">layer_type</span></code> is a string.
+Channel data must be stored as a <code class="docutils literal notranslate"><span class="pre">pandas</span></code> <code class="docutils literal notranslate"><span class="pre">DataFrame</span></code> in
+<code class="docutils literal notranslate"><span class="pre">meta['metadata']['point_data']</span></code>.
+All entries with <code class="docutils literal notranslate"><span class="pre">layer_type</span> <span class="pre">!=</span> <span class="pre">'surface'</span></code> are ignored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">list</span></code> containing (potentially multiple) string paths to the saved file(s).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of str</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#napari_multi_channel_surface.write_single_surface" title="napari_multi_channel_surface.write_single_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_single_surface</span></code></a>, <a class="reference external" href="https://napari.org/stable/api/napari.layers.Surface.html#napari.layers.Surface" title="(in napari v0.6.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">napari.layers.Surface</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="napari_multi_channel_surface.SurfaceChannelChange">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">napari_multi_channel_surface.</span></span><span class="sig-name descname"><span class="pre">SurfaceChannelChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">viewer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://napari.org/stable/api/napari.Viewer.html#napari.Viewer" title="(in napari v0.6.6)"><span class="pre">napari.viewer.Viewer</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#napari_multi_channel_surface.SurfaceChannelChange" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://pyapp-kit.github.io/magicgui/api/widgets/Container/#magicgui.widgets.Container" title="(in magicgui v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
+<p>Container widget with widgets and their callbacks for changing surface channels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>viewer</strong> (<a class="reference external" href="https://napari.org/stable/api/napari.Viewer.html#napari.Viewer" title="(in napari v0.6.6)"><em>napari.viewer.Viewer</em></a>) – The Viewer object to which the widget is attached.</p>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">annotation</span></code></dt><dd><p>Return type annotation for the parameter represented by the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">enabled</span></code></dt><dd><p>Whether widget is enabled (editable).</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></dt><dd><p>Return the current height of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">label</span></code></dt><dd><p>Return a label to use for this widget when present in Containers.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">labels</span></code></dt><dd><p>Whether widgets are presented with labels.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">layout</span></code></dt><dd><p>Return the layout of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">margins</span></code></dt><dd><p>Return margin between the content and edges of the container.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_height</span></code></dt><dd><p>Get the maximum height of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_width</span></code></dt><dd><p>Get the maximum width of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_height</span></code></dt><dd><p>Get the minimum height of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_width</span></code></dt><dd><p>Get the minimum width of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">native</span></code></dt><dd><p>Return native backend widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">options</span></code></dt><dd><p>Return options currently being used in this widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">orientation</span></code></dt><dd><p>Orientation of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_kind</span></code></dt><dd><p>Return <code class="xref py py-attr docutils literal notranslate"><span class="pre">inspect.Parameter.kind</span></code> represented by this widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></dt><dd><p>Return the parent widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent_changed</span></code></dt><dd><p>Signal emitted when the parent of the widget changes.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_native_widget</span></code></dt><dd><p>Return the root native backend widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">tooltip</span></code></dt><dd><p>Get the tooltip for this widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">visible</span></code></dt><dd><p>Return whether widget is visible.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">widget_type</span></code></dt><dd><p>Return type of widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">width</span></code></dt><dd><p>Return the current width of the widget.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">append</span></code>(value)</p></td>
+<td><p>S.append(value) -- append value to the end of the sequence</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">asdict</span></code>()</p></td>
+<td><p>Return state of widget as dict.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code>()</p></td>
+<td><p>Close widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code>(value)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">extend</span></code>(values)</p></td>
+<td><p>S.extend(iterable) -- extend sequence by appending elements from the iterable</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_callable</span></code>(obj[, gui_options])</p></td>
+<td><p>Create a Container widget from a callable object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_signature</span></code>(sig, **kwargs)</p></td>
+<td><p>Create a Container widget from an inspect.Signature object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_widget</span></code>(name)</p></td>
+<td><p>Return widget with name <cite>name</cite>, or None if one doesn't exist.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hide</span></code>()</p></td>
+<td><p>Hide widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code>(value[, start, stop])</p></td>
+<td><p>Return index of a specific widget instance (or widget name).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert</span></code>(key, widget)</p></td>
+<td><p>Insert widget at <code class="docutils literal notranslate"><span class="pre">key</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop</span></code>([index])</p></td>
+<td><p>Raise IndexError if list is empty or index is out of range.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code>(value)</p></td>
+<td><p>Remove a widget instance (may also be string name of widget).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
+<td><p>Return an RGBA (MxNx4) numpy array bitmap of the rendered widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_choices</span></code>(*_)</p></td>
+<td><p>Reset choices for all Categorical subWidgets to the default state.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code>()</p></td>
+<td><p>S.reverse() -- reverse <em>IN PLACE</em></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code>([run])</p></td>
+<td><p>Show widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shown</span></code>()</p></td>
+<td><p>Context manager to show the widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code>([mapping])</p></td>
+<td><p>Update the parameters in the widget from a mapping, iterable, or kwargs.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="napari_multi_channel_surface.DynamicComboBox">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">napari_multi_channel_surface.</span></span><span class="sig-name descname"><span class="pre">DynamicComboBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#napari_multi_channel_surface.DynamicComboBox" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://pyapp-kit.github.io/magicgui/api/widgets/ComboBox/#magicgui.widgets.ComboBox" title="(in magicgui v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ComboBox</span></code></a></p>
+<p>ComboBox Widget (dropdown menu) for selecting channels with dynamic updating of choices.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://pyapp-kit.github.io/magicgui/api/widgets/ComboBox/#magicgui.widgets.ComboBox" title="(in magicgui v0.0.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">magicgui.widgets.ComboBox</span></code></a></p>
+</div>
+<p class="rubric">Notes</p>
+<p>This is a small extension of the <code class="docutils literal notranslate"><span class="pre">magicgui.widgets.ComboBox</span></code> widget to allow dynamic
+updating of choices.
+A <code class="docutils literal notranslate"><span class="pre">Container</span></code> object can reset values of all children in response to interactions with
+napari.
+To counter this, we initialize <code class="docutils literal notranslate"><span class="pre">choices</span></code> with a function that returns the <code class="docutils literal notranslate"><span class="pre">choices</span></code> property.
+This function is set as the default <code class="docutils literal notranslate"><span class="pre">choices</span></code> function, leading <code class="docutils literal notranslate"><span class="pre">reset_choices()</span></code> to do nothing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">annotation</span></code></dt><dd><p>Return type annotation for the parameter represented by the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">choices</span></code></dt><dd><p>Available value choices for this widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_choice</span></code></dt><dd><p>Return the text of the currently selected choice.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">enabled</span></code></dt><dd><p>Whether widget is enabled (editable).</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">height</span></code></dt><dd><p>Return the current height of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">label</span></code></dt><dd><p>Return a label to use for this widget when present in Containers.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_height</span></code></dt><dd><p>Get the maximum height of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_width</span></code></dt><dd><p>Get the maximum width of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_height</span></code></dt><dd><p>Get the minimum height of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">min_width</span></code></dt><dd><p>Get the minimum width of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">native</span></code></dt><dd><p>Return native backend widget.</p>
+</dd>
+<dt><strong>null_value</strong></dt><dd></dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">options</span></code></dt><dd><p>Return options currently being used in this widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_kind</span></code></dt><dd><p>Return <code class="xref py py-attr docutils literal notranslate"><span class="pre">inspect.Parameter.kind</span></code> represented by this widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></dt><dd><p>Return the parent widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent_changed</span></code></dt><dd><p>Signal emitted when the parent of the widget changes.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">root_native_widget</span></code></dt><dd><p>Return the root native backend widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">tooltip</span></code></dt><dd><p>Get the tooltip for this widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">value</span></code></dt><dd><p>Return current value of the widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">visible</span></code></dt><dd><p>Return whether widget is visible.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">widget_type</span></code></dt><dd><p>Return type of widget.</p>
+</dd>
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">width</span></code></dt><dd><p>Return the current width of the widget.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bind</span></code>(value[, call])</p></td>
+<td><p>Binds <code class="docutils literal notranslate"><span class="pre">value</span></code> to self.value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code>()</p></td>
+<td><p>Close widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">del_choice</span></code>(choice_name)</p></td>
+<td><p>Delete the provided <code class="docutils literal notranslate"><span class="pre">choice_name</span></code> and associated data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_choice</span></code>(choice_name)</p></td>
+<td><p>Get data for the provided <code class="docutils literal notranslate"><span class="pre">choice_name</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_value</span></code>()</p></td>
+<td><p>Callable version of <cite>self.value</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hide</span></code>()</p></td>
+<td><p>Hide widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">render</span></code>()</p></td>
+<td><p>Return an RGBA (MxNx4) numpy array bitmap of the rendered widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_choices</span></code>(*_)</p></td>
+<td><p>Reset choices to the default state.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_choice</span></code>(choice_name[, data])</p></td>
+<td><p>Set data for the provided <code class="docutils literal notranslate"><span class="pre">choice_name</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_value</span></code>(value)</p></td>
+<td><p>Normalize and set the value of the widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code>([run])</p></td>
+<td><p>Show widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">shown</span></code>()</p></td>
+<td><p>Context manager to show the widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unbind</span></code>()</p></td>
+<td><p>Unbinds any bound values.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="napari_multi_channel_surface.stanford_bunny">
+<span class="sig-prename descclassname"><span class="pre">napari_multi_channel_surface.</span></span><span class="sig-name descname"><span class="pre">stanford_bunny</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#napari_multi_channel_surface.stanford_bunny" title="Link to this definition">¶</a></dt>
+<dd><p>Returns the standford bunny with point data ‘X’,’Y’, and ‘Z’ representing cartesian coordinates.</p>
+<p class="rubric">Notes</p>
+<p>Surface mesh adapted from data downloaded from repository
+<a class="reference external" href="https://graphics.stanford.edu/data/3Dscanrep/">https://graphics.stanford.edu/data/3Dscanrep/</a>.
+Source file used: bun_zipper_res2.ply</p>
+<p>Surface metadata:</p>
+<p>Source: Stanford University Computer Graphics Laboratory
+| Scanner: Cyberware 3030 MS
+| Number of scans: 10
+| Total size of scans: 362,272 points (about 725,000 triangles)
+| Reconstruction: zipper
+| Size of reconstruction: 35947 vertices, 69451 triangles
+| Comments: contains 5 holes in the bottom</p>
+</dd></dl>
+
 </section>
 </section>
 
@@ -49,13 +459,23 @@
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">napari_multi_channel_surface package</a><ul>
-<li><a class="reference internal" href="#module-contents">Module contents</a></li>
+<li><a class="reference internal" href="#module-napari_multi_channel_surface">Module contents</a><ul>
+<li><a class="reference internal" href="#napari_multi_channel_surface.napari_get_reader"><code class="docutils literal notranslate"><span class="pre">napari_get_reader()</span></code></a></li>
+<li><a class="reference internal" href="#napari_multi_channel_surface.reader_function"><code class="docutils literal notranslate"><span class="pre">reader_function()</span></code></a></li>
+<li><a class="reference internal" href="#napari_multi_channel_surface.read_surface"><code class="docutils literal notranslate"><span class="pre">read_surface()</span></code></a></li>
+<li><a class="reference internal" href="#napari_multi_channel_surface.write_single_surface"><code class="docutils literal notranslate"><span class="pre">write_single_surface()</span></code></a></li>
+<li><a class="reference internal" href="#napari_multi_channel_surface.write_multiple"><code class="docutils literal notranslate"><span class="pre">write_multiple()</span></code></a></li>
+<li><a class="reference internal" href="#napari_multi_channel_surface.SurfaceChannelChange"><code class="docutils literal notranslate"><span class="pre">SurfaceChannelChange</span></code></a></li>
+<li><a class="reference internal" href="#napari_multi_channel_surface.DynamicComboBox"><code class="docutils literal notranslate"><span class="pre">DynamicComboBox</span></code></a></li>
+<li><a class="reference internal" href="#napari_multi_channel_surface.stanford_bunny"><code class="docutils literal notranslate"><span class="pre">stanford_bunny()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -73,7 +493,7 @@
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
-<div id="searchbox" style="display: none" role="search">
+<search id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
@@ -81,18 +501,21 @@
       <input type="submit" value="Go" />
     </form>
     </div>
-</div>
+</search>
 <script>document.getElementById('searchbox').style.display = "block"</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
+    <div class="related" role="navigation" aria-label="Related">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li class="right" >
           <a href="modules.html" title="napari_multi_channel_surface"
              >previous</a> |</li>
@@ -103,7 +526,7 @@
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2025, University of Warwick.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
     </div>
   </body>
 </html>
