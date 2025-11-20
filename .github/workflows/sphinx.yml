@@ -12,7 +12,9 @@ jobs:
       with:
         persist-credentials: false
     - name: Build HTML
-      uses: ammaraskar/sphinx-action@master
+      with:
+        pre-build-command: 'pip install .[docs]'
+      uses: ammaraskar/sphinx-action@0.4
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:

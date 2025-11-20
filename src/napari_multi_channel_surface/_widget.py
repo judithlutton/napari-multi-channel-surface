@@ -10,7 +10,9 @@ from typing import TYPE_CHECKING
 
 import magicgui.widgets as widgets
 import numpy as np
-from napari.utils import notifications
+
+# TODO: replace with logging-based outputs
+# from napari.utils import notifications
 
 if TYPE_CHECKING:
     import napari
@@ -56,11 +58,11 @@ class SurfaceChannelChange(widgets.Container):
         self._on_layers_changed(None)
         self._on_change_surface(self._surface_layer_combo.value)
 
-        self.native_parent_changed.connect(
-            lambda x: notifications.show_debug(
-                f"Widget parent changed. Backend: {x}"
-            )
-        )
+        # self.native_parent_changed.connect(
+        #     lambda x: notifications.show_debug(
+        #         f"Widget parent changed. Backend: {x}"
+        #     )
+        # )
 
     def _on_layers_changed(self, event):
         """Callback for the event of the layers in ``_viewer`` changing.
@@ -78,22 +80,24 @@ class SurfaceChannelChange(widgets.Container):
         that the inefficiency of this approach will be noticeable. Alternatives would require handling
         each event type separately, and could become more dependent on the LayerList representation.
         """
-        if event is None:
-            notifications.show_debug("Creating surface layer list")
-        elif str(event.type) in [
+        layer_events = [
             "inserted",
             "removed",
             "moved",
             "changed",
             "reordered",
-        ]:
-            notifications.show_debug(
-                f"Updating surface layer list in response to {event.type}"
-            )
-        else:
-            notifications.show_debug(
-                f"Ignoring surface layer event {event.type}"
-            )
+        ]
+        # if event is None:
+        #     notifications.show_debug("Creating surface layer list")
+        # elif str(event.type) in layer_events:
+        #     notifications.show_debug(
+        #         f"Updating surface layer list in response to {event.type}"
+        #     )
+        # else:
+        if event is not None and str(event.type) not in layer_events:
+            #     notifications.show_debug(
+            #         f"Ignoring surface layer event {event.type}"
+            #     )
             return
         surface_list = [
             x for x in self._viewer.layers if type(x).__name__ == "Surface"
@@ -115,7 +119,7 @@ class SurfaceChannelChange(widgets.Container):
         surface_layer : napari.layers.Surface
             The selected ``Surface`` object
         """
-        notifications.show_debug("Selected surface changed")
+        # notifications.show_debug("Selected surface changed")
         current_channel = (
             self._channel_selector.value
             if len(self._channel_selector.choices) > 0
@@ -146,18 +150,18 @@ class SurfaceChannelChange(widgets.Container):
         channel_name : str
             The selected channel to be displayed.
         """
-        notifications.show_debug("Selected channel changed")
+        # notifications.show_debug("Selected channel changed")
         surface_layer = self._surface_layer_combo.value
         if surface_layer is None:
             return
         point_data = surface_layer.metadata["point_data"]
-        notifications.show_debug(f"{channel_name=}")
+        # notifications.show_debug(f"{channel_name=}")
         if channel_name in point_data:
             surface_layer.vertex_values = np.array(point_data[channel_name])
-        else:
-            notifications.show_warning(
-                f"Point data {channel_name} not found in Surface {surface_layer}. No changes made."
-            )
+        # else:
+        #     notifications.show_warning(
+        #         f"Point data {channel_name} not found in Surface {surface_layer}. No changes made."
+        #     )
 
 
 class DynamicComboBox(widgets.ComboBox):

@@ -30,13 +30,10 @@ requires-python = ">=3.10"
 # See best practices: https://napari.org/stable/plugins/building_a_plugin/best_practices.html
 dependencies = [
     "h5py",
-    "napari",
     "numpy",
     "magicgui",
     "meshio",
-    "pandas",
-    "qtpy",
-    "scikit-image"
+    "pandas"
 ]
 
 [project.optional-dependencies]
@@ -52,6 +49,10 @@ dev = [
     "pytest-qt",  # https://pytest-qt.readthedocs.io/en/latest/
     "napari[qt]",  # test with napari's default Qt bindings
     "pyvista", # to create .vtk files unsupported by meshio
+]
+docs = [
+    "sphinx",
+    "numpydoc",
 ]
 
 [project.entry-points."napari.manifest"]
