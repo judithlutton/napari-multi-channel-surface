@@ -35,8 +35,7 @@ dependencies = [
     "magicgui",
     "meshio",
     "pandas",
-    "qtpy",
-    "scikit-image"
+    "qtpy"
 ]
 
 [project.optional-dependencies]
