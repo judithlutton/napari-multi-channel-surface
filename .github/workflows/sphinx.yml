@@ -12,6 +12,8 @@ jobs:
       with:
         persist-credentials: false
     - name: Build HTML
+      with:
+        pre-build-command: 'pip install .'
       uses: ammaraskar/sphinx-action@0.4
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
