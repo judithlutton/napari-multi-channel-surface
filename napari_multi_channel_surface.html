@@ -10,8 +10,8 @@
     <link rel="stylesheet" type="text/css" href="_static/classic.css?v=2bf1fcf8" />
     
     <script src="_static/documentation_options.js?v=47de8214"></script>
-    <script src="_static/doctools.js?v=9bcbadda"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -135,7 +135,7 @@ If point data is read, it is stored as a <code class="docutils literal notransla
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference external" href="https://napari.org/stable/api/napari.layers.Surface.html#napari.layers.Surface" title="(in napari v0.6.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">napari.layers.Surface</span></code></a></p>
+<p><a class="reference external" href="https://napari.org/stable/api/napari.layers.Surface.html#napari.layers.Surface" title="(in napari v0.7.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">napari.layers.Surface</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -162,7 +162,7 @@ Channels must be located in <code class="docutils literal notranslate"><span cla
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#napari_multi_channel_surface.write_multiple" title="napari_multi_channel_surface.write_multiple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_multiple</span></code></a>, <a class="reference external" href="https://napari.org/stable/api/napari.layers.Surface.html#napari.layers.Surface" title="(in napari v0.6.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">napari.layers.Surface</span></code></a></p>
+<p><a class="reference internal" href="#napari_multi_channel_surface.write_multiple" title="napari_multi_channel_surface.write_multiple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_multiple</span></code></a>, <a class="reference external" href="https://napari.org/stable/api/napari.layers.Surface.html#napari.layers.Surface" title="(in napari v0.7.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">napari.layers.Surface</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -193,18 +193,18 @@ All entries with <code class="docutils literal notranslate"><span class="pre">la
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference internal" href="#napari_multi_channel_surface.write_single_surface" title="napari_multi_channel_surface.write_single_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_single_surface</span></code></a>, <a class="reference external" href="https://napari.org/stable/api/napari.layers.Surface.html#napari.layers.Surface" title="(in napari v0.6.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">napari.layers.Surface</span></code></a></p>
+<p><a class="reference internal" href="#napari_multi_channel_surface.write_single_surface" title="napari_multi_channel_surface.write_single_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_single_surface</span></code></a>, <a class="reference external" href="https://napari.org/stable/api/napari.layers.Surface.html#napari.layers.Surface" title="(in napari v0.7.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">napari.layers.Surface</span></code></a></p>
 </div>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="napari_multi_channel_surface.SurfaceChannelChange">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">napari_multi_channel_surface.</span></span><span class="sig-name descname"><span class="pre">SurfaceChannelChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">viewer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://napari.org/stable/api/napari.Viewer.html#napari.Viewer" title="(in napari v0.6.6)"><span class="pre">napari.viewer.Viewer</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#napari_multi_channel_surface.SurfaceChannelChange" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">napari_multi_channel_surface.</span></span><span class="sig-name descname"><span class="pre">SurfaceChannelChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">viewer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://napari.org/stable/api/napari.Viewer.html#napari.Viewer" title="(in napari v0.7.0)"><span class="pre">napari.viewer.Viewer</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#napari_multi_channel_surface.SurfaceChannelChange" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://pyapp-kit.github.io/magicgui/api/widgets/Container/#magicgui.widgets.Container" title="(in magicgui v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
 <p>Container widget with widgets and their callbacks for changing surface channels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>viewer</strong> (<a class="reference external" href="https://napari.org/stable/api/napari.Viewer.html#napari.Viewer" title="(in napari v0.6.6)"><em>napari.viewer.Viewer</em></a>) – The Viewer object to which the widget is attached.</p>
+<dd class="field-odd"><p><strong>viewer</strong> (<a class="reference external" href="https://napari.org/stable/api/napari.Viewer.html#napari.Viewer" title="(in napari v0.7.0)"><em>napari.viewer.Viewer</em></a>) – The Viewer object to which the widget is attached.</p>
 </dd>
 <dt class="field-even">Attributes<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
@@ -324,7 +324,7 @@ All entries with <code class="docutils literal notranslate"><span class="pre">la
 
 <dl class="py class">
 <dt class="sig sig-object py" id="napari_multi_channel_surface.DynamicComboBox">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">napari_multi_channel_surface.</span></span><span class="sig-name descname"><span class="pre">DynamicComboBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#napari_multi_channel_surface.DynamicComboBox" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">napari_multi_channel_surface.</span></span><span class="sig-name descname"><span class="pre">DynamicComboBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#napari_multi_channel_surface.DynamicComboBox" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://pyapp-kit.github.io/magicgui/api/widgets/ComboBox/#magicgui.widgets.ComboBox" title="(in magicgui v0.0.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ComboBox</span></code></a></p>
 <p>ComboBox Widget (dropdown menu) for selecting channels with dynamic updating of choices.</p>
 <div class="admonition seealso">
@@ -526,7 +526,7 @@ Source file used: bun_zipper_res2.ply</p>
     </div>
     <div class="footer" role="contentinfo">
     &#169; Copyright 2025, University of Warwick.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
     </div>
   </body>
 </html>
